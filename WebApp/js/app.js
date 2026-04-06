@@ -121,21 +121,27 @@ function displayNews(news) {
         return;
     }
 
-    container.innerHTML = news.map(item => `
-        <div class="item-card" onclick="showNewsDetail(${item.id})">
-            <div class="item-header">
-                <h3 class="item-title">${item.title.rendered}</h3>
+    container.innerHTML = news.map(item => {
+        const title = item.title?.rendered || item.title || 'Untitled';
+        const excerpt = item.excerpt?.rendered ? item.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 150) : 'No description available';
+        const category = item.news_category || 'General';
+        
+        return `
+            <div class="item-card" onclick="showNewsDetail(${item.id})">
+                <div class="item-header">
+                    <h3 class="item-title">${title}</h3>
+                </div>
+                <div class="item-meta">
+                    <span>📅 ${new Date(item.date).toLocaleDateString()}</span>
+                    <span class="item-badge">${category}</span>
+                </div>
+                <div class="item-excerpt">${excerpt}...</div>
+                <div class="item-actions">
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); showNewsDetail(${item.id})">Read More</button>
+                </div>
             </div>
-            <div class="item-meta">
-                <span>📅 ${new Date(item.date).toLocaleDateString()}</span>
-                <span class="item-badge">${item.news_category || 'General'}</span>
-            </div>
-            <div class="item-excerpt">${item.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 150)}...</div>
-            <div class="item-actions">
-                <button class="btn btn-primary" onclick="event.stopPropagation(); showNewsDetail(${item.id})">Read More</button>
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // Display Recent News
@@ -280,21 +286,26 @@ async function displayPosts(posts) {
         return { ...post, imageUrl };
     }));
 
-    container.innerHTML = postsWithImages.map(item => `
-        <div class="item-card" onclick="showPostDetail(${item.id})">
-            <div class="item-header">
-                <h3 class="item-title">${item.title.rendered}</h3>
+    container.innerHTML = postsWithImages.map(item => {
+        const title = item.title?.rendered || item.title || 'Untitled';
+        const excerpt = item.excerpt?.rendered ? item.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 150) : 'No description available';
+        
+        return `
+            <div class="item-card" onclick="showPostDetail(${item.id})">
+                <div class="item-header">
+                    <h3 class="item-title">${title}</h3>
+                </div>
+                <div class="item-meta">
+                    <span>📅 ${new Date(item.date).toLocaleDateString()}</span>
+                </div>
+                ${item.imageUrl ? `<img src="${item.imageUrl}" class="item-image">` : ''}
+                <div class="item-excerpt">${excerpt}...</div>
+                <div class="item-actions">
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); showPostDetail(${item.id})">Read More</button>
+                </div>
             </div>
-            <div class="item-meta">
-                <span>📅 ${new Date(item.date).toLocaleDateString()}</span>
-            </div>
-            ${item.imageUrl ? `<img src="${item.imageUrl}" class="item-image">` : ''}
-            <div class="item-excerpt">${item.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 150)}...</div>
-            <div class="item-actions">
-                <button class="btn btn-primary" onclick="event.stopPropagation(); showPostDetail(${item.id})">Read More</button>
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // Display Recent Posts
