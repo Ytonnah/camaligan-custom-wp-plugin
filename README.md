@@ -1,0 +1,1 @@
+"# camaligan-custom-wp-plugin" 
