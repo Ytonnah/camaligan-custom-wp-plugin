@@ -1,0 +1,318 @@
+.MainDivHolder_MunMap
+{
+	height:500px;
+}
+
+.allMapContent_Holder
+{
+	height: auto;
+	margin-top: 170px;
+	margin-bottom: 170px;
+	animation: mapFrameOpen 1s 0.5s linear forwards;
+}
+
+@keyframes mapFrameOpen
+{
+	0%{
+		margin-top: 170px;
+		margin-bottom: 170px;
+	}
+	
+	75%{
+		margin-top: 0px;
+		margin-bottom: 0px;
+	}
+	
+	90%{
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	
+	100%
+	{
+		margin-top: 0px;
+		margin-bottom: 0px;
+	}
+}
+
+.Title_Holder
+{
+	min-height: 80px;
+	max-height: 120px;
+	background-color:  #1c1c1c;
+	width: 60%;
+	margin: auto;
+	padding-left: 10px;
+	padding-right: 10px;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
+	overflow: hidden;
+	
+}
+.MunLandMap_Header
+{
+	font-family: 'Squada One', Arial;
+	color: #8299ff;
+	font-size: 25px;
+	font-weight: 900;
+	animation: ShadowMover 10s infinite linear;
+	word-wrap: break-word;
+}
+
+@keyframes ShadowMover
+{
+	0%
+	{
+		text-shadow: 0px 0px 10px red;
+	}
+	
+	10%
+	{
+		text-shadow: 0px 0px 30px green;
+	}
+	
+	20%
+	{
+		text-shadow: 0px 0px 10px blue;
+	}
+	
+	30%
+	{
+		text-shadow: 0px 0px 30px red;
+	}
+	
+	40%
+	{
+		text-shadow: 0px 0px 10px green;
+	}
+	
+	50%
+	{
+		text-shadow: 0px 0px 30px blue;
+	}
+	
+	60%
+	{
+		text-shadow: 0px 0px 10px red;
+	}
+	
+	70%
+	{
+		text-shadow: 0px 0px 30px green;
+	}
+	
+	80%
+	{
+		text-shadow: 0px 0px 10px blue;
+	}
+	
+	90%
+	{
+		text-shadow: 0px 0px 30px green;
+	}
+	
+	100%
+	{
+		text-shadow: 0px 0px 10px red;
+	}
+}
+
+#uppperFrame
+{
+	height: 20px;
+	background-color: #2b3440;
+	border: solid 2px #1c1c1c;
+	border-bottom: none;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+}
+
+#lowerFrame
+{
+	height: 20px;
+	background-color: #2b3440;
+	border: solid 2px #1c1c1c;
+	border-bottom: none;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+	
+}
+
+.MunLandMap_Holder
+{
+	border: solid 2px #1c1c1c;
+	border-bottom: none;
+	border-too: none;
+	animation: MunLandMapOpen_Animate 1s 0.5s linear forwards;
+}
+
+@keyframes MunLandMapOpen_Animate
+{
+	0%{
+		height: 0px;
+	}
+	
+	75%{
+		height: 340px;
+	}
+	
+	90%{
+		height: 330px;;
+	}
+	
+	100%
+	{
+		height: 340px;;
+	}
+}
+
+.MunLandMap_Holder > div
+{
+	opacity: 0;
+	position: absolute;
+	animation: MunLandMapDisplay_Animate 0.5s linear forwards;
+	animation-delay: 1.75s;
+}
+
+@keyframes MunLandMapDisplay_Animate
+{
+	0%{
+		opacity: 0;
+		position: absolute;
+	}
+	
+	25%
+	{	
+		opacity: 0;
+		position: relative;
+	}
+	
+	100%{
+		opacity: 1;
+		position: relative;
+	}
+}
+
+.allMunLandMap_contentHolder
+{
+	position: relative;
+	height: 340px;
+}
+
+.MapofOfficesButton
+{
+	height: 40px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	border: solid;
+	border-width: 2px;
+	border-color: #3b3a3a;
+	text-align: center;
+	color: white;
+	margin-bottom: 5px;
+	outline: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+}
+
+button#ZoomInMap
+{
+	background: #0d043b;
+	width: 40px;
+	margin-top: 5px;
+	font-size: 25px;
+	left: 5px;
+}
+
+button#ZoomDefaultMap
+{
+	width: 120px;
+	margin-top: 5px;
+	background: #262626;
+	font-size: 12px;
+	left: 55px;
+}
+
+button#ZoomOutMap
+{
+	width: 40px;
+	margin-top: 5px;
+	background: #4a0000;
+	font-size: 25px;
+	left: 185px;
+}
+
+button#ZoomInMap:hover
+{
+	background: #5d58f5;
+	border-color: #141414;
+	color: black;
+	cursor: zoom-in;
+}
+
+button#ZoomDefaultMap:hover
+{
+	background: #e2e2e2;
+	font-weight: 900;
+	border-color: #141414;
+	color: black;
+	cursor: pointer;
+}
+
+button#ZoomOutMap:hover
+{
+	background: #b53e3e;
+	border-color: #141414;
+	color: black;
+	cursor: zoom-out;
+}
+
+.svg_holder
+{
+	height: 340px;
+	overflow: hidden;
+}
+	 
+#MunLandMap_svg
+{
+	height: 340px;
+	width: auto;
+	display: block;
+	position: relative;
+	cursor: grab;
+	margin: auto;
+	padding: auto;
+	touch-action: none;
+}
+
+.barangay_boundary
+{
+	fill: red;
+	opacity: 0;
+}
+
+.barangay_boundary:hover
+{
+	opacity: 0.7;
+	cursor: pointer;
+}
+
+.MunLand0{fill:#69B3E3;stroke:#69B3E3;stroke-width:0.75;stroke-miterlimit:10;}
+.MunLand1{fill:#69B3E3;stroke:#69B3E3;stroke-miterlimit:10;}
+.MunLand2{fill:#69B3E3;}
+.MunLand3{fill:#69B3E3;stroke:#69B3E3;stroke-width:0.5;stroke-miterlimit:10;}
+.MunLand4{fill:#69B3E3;stroke:#69B3E3;stroke-width:0.25;stroke-miterlimit:10;}
+.MunLand5{fill:#4064AF;}
+.MunLand6{fill:none;stroke:#FBB040;stroke-width:14;stroke-miterlimit:10;}
+.MunLand7{fill:none;stroke:#FBB040;stroke-width:9;stroke-miterlimit:10;}
+.MunLand8{fill:none;stroke:#FBB040;stroke-width:4;stroke-miterlimit:10;}
+.MunLand9{fill:none;stroke:#FBB040;stroke-width:10;stroke-miterlimit:10;}
+.MunLand10{fill:none;stroke:#FBB040;stroke-width:5;stroke-miterlimit:10;}
+.MunLand11{fill:none;stroke:#FBB040;stroke-width:7;stroke-miterlimit:10;}
+.MunLand12{fill:none;stroke:#FBB040;stroke-width:6;stroke-miterlimit:10;}
+.MunLand13{fill:none;stroke:#FBB040;stroke-width:2;stroke-miterlimit:10;}
+.MunLand14{fill:none;stroke:#FBB040;stroke-width:8;stroke-miterlimit:10;}
+.MunLand15{fill:none;stroke:#000000;stroke-width:8;stroke-miterlimit:10;}
+.MunLand16{fill:#006838;}

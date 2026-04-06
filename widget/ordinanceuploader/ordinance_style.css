@@ -1,0 +1,192 @@
+div#ordinance_holder
+		{
+			width: 100%;
+			height: auto;
+			display: block;
+			background-color: #07035e;
+		}
+
+		span#ordinance_title
+		{
+			font-family: 'Bahnschrift Condensed', Arial;
+			color: white;
+			text-align: center;
+			text-shadow: 0px 0px 5px #ffb54d;		
+			font-weight: 900;
+			text-decoration: underline;
+			font-size: 20px;
+		}
+		
+		table#ordinance_organizer > tbody > tr#classification > td, td#administrative_title_m, td#development_title_m, td#environment_title_m, td#health_sanitation_title_m, td#lit_title_m, td#public_utilities_title_m, td#social_title_m
+		{
+			text-align: center;
+			vertical-align: middle;
+			background-color: #e6e6e6;
+			font-family: Helvetica, Arial;
+			font-size: 13px;
+			font-weight: 900;
+		}
+		
+		table#ordinance_organizer > tbody > tr#classification > td
+		{
+			border: solid 2px #07035e;
+			border-bottom: none;
+		}
+		
+		td#administrative_title_m, td#development_title_m, td#environment_title_m, td#health_sanitation_title_m, td#lit_title_m, td#public_utilities_title_m, td#social_title_m
+		{
+			border: solid 2px #07035e;
+			border-right: none;
+		}
+		
+		table#ordinance_organizer > tbody > tr#class_files > td
+		{
+			background-color: white;
+			border: solid 2px #07035e;
+			border-top: none;
+			vertical-align: top;
+		}
+		
+		td#administrative_files_m, td#development_files_m, td#environment_files_m, td#health_sanitation_files_m,
+		td#lit_files_m, td#public_utilities_files_m, td#social_files_m
+		{
+			vertical-align: middle;
+			width: 70%;
+			background-color: white;
+			border: solid 2px #07035e;
+			border-left: none;
+		}
+		
+		td#administrative_files a,td#administrative_files span, td#administrative_files_m, td#administrative_files_m a,
+		td#development_files a,td#development_files span, td#development_files_m, td#development_files_m a,
+		td#environment_files a,td#environment_files span, td#environment_files_m, td#environment_files_m a,
+		td#health_sanitation_files a,td#health_sanitation_files span, td#health_sanitation_files_m, td#health_sanitation_files_m a,
+		td#lit_files a,td#lit_files span, td#lit_files_m, td#lit_files_m a,
+		td#public_utilities_files a,td#public_utilities_files span, td#public_utilities_files_m, td#public_utilities_files_m a,
+		td#social_files a,td#social_files span, td#social_files_m, td#social_files_m a
+		{
+			font-size: 11px;
+			font-weight: 900;
+		}
+		
+		td#administrative, td#administrative_files a, td#administrative_files span,
+		td#administrative_title_m, td#administrative_files_m a, td#administrative_files_m span
+		{
+			color: #353d00;
+		}
+		
+		td#development, td#development_files a, td#development_files span,
+		td#development_title_m, td#development_files_m a, td#development_files_m span
+		{
+			color: #011f42;
+		}
+		
+		td#environment, td#environment_files a, td#environment_files span,
+		td#environment_title_m, td#environment_files_m a, td#environment_files_m span
+		{
+			color: #1c4d25;
+		}
+
+		td#health_sanitation, td#health_sanitation_files a, td#health_sanitation_files span,
+		td#health_sanitation_title_m, td#health_sanitation_files_m a, td#health_sanitation_files_m span
+		{
+			color: #e62929;
+		}
+
+		td#lit, td#lit_files a, td#lit_files span,
+		td#lit_title_m, td#lit_files_m a, td#lit_files_m span
+		{
+			color: #3c0e40;
+		}
+		
+		td#public_utilities, td#public_utilities_files a, td#public_utilities_files span,
+		td#public_utilities_title_m, td#public_utilities_files_m a, td#public_utilities_files_m span
+		{
+			color: #171854;
+		}
+		
+		td#social, td#social_files a, td#social_files span,
+		td#social_title_m, td#social_files_m a, td#social_files_m span
+		{
+			color: #9c6e28;
+		}
+		
+		tr#class_files > td a:hover, tr#administrative_mobile > td a:hover, tr#development_mobile > td a:hover, tr#environment_mobile > td a:hover, tr#health_sanitation_mobile > td a:hover, tr#lit_mobile > td a:hover, tr#public_utilities_mobile > td a:hover, tr#social_mobile > td a:hover
+		{
+			color: #ffdd00;
+		}
+		
+		tr#class_files > td a:hover, tr#administrative_mobile > td a:hover, tr#development_mobile > td a:hover, tr#environment_mobile > td a:hover, tr#health_sanitation_mobile > td a:hover, tr#lit_mobile > td a:hover, tr#public_utilities_mobile > td a:hover, tr#social_mobile > td a:hover
+		{
+			cursor: pointer;
+		}
+		
+		@media only screen and (max-width: 1099px)
+		{
+			table#ordinance_organizer
+			{
+				display: none;
+			}
+			
+			table#ordinance_organizer_mobile
+			{
+				word-break: break-word;
+				display: block;
+			}
+		}
+		
+		@media only screen and (min-width: 1100px)
+		{
+			table#ordinance_organizer_mobile
+			{
+				display: none;
+			}
+			
+			table#ordinance_organizer
+			{
+				table-layout: fixed;
+				word-break: break-word;
+				display: block;
+			}
+		}
+		
+		div#showAll_mainHolder
+		{
+		    width: 40%;
+		    position: relative;
+		    left: 30%;
+		    border: solid 2px #41525c;
+			border-radius: 15px;
+			background-color: #080c38;
+			transition: 0.5s;
+			margin-bottom: 20px;
+		}
+		
+		a#showAll_OrdinanceLink
+		{
+		    color: #bdbdbd;
+			font-size: 13px;
+			font-weight: 900;
+			width: 40%;
+			transition: 0.5s;
+		}
+		
+		div#showAll_mainHolder:hover a#showAll_OrdinanceLink
+		{
+			color: #eded2d;
+		}
+		
+		div#showAll_mainHolder:hover
+		{
+			background-color: #05064f;
+			cursor: pointer;
+			border: solid 2px #9ec3d9;
+		}
+		
+		@media only screen and (max-width: 532px)
+		{
+			td#administrative_title_m, td#development_title_m, td#environment_title_m, td#health_sanitation_title_m, td#lit_title_m, td#public_utilities_title_m, td#social_title_m
+			{
+				font-size: 12px;
+			}
+		}

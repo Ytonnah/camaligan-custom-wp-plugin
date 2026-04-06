@@ -1,0 +1,1223 @@
+/*	
+ *	CSS style of Office Banner Widget of Camaligan
+ *	Created by Patrick James O. De Leon
+ *	patrickjamesdeleon@gmail.com
+ */
+
+/*CSS for all Banner*/
+/*#officeBanner_holder*/
+div#officeBanner_holder
+{
+	background: black;
+	/*width: 300px!important;
+	height: 332px;*/
+	margin: auto;
+}
+
+div#officeBanner_holder svg
+{
+	width: 100%;
+	filter: grayscale(100%);
+}
+
+div#childHolderA
+{
+	width: 48%;
+	float: left;
+	padding-left: 2%;
+}
+
+div#childHolderB
+{
+	width: 48%;
+	float: left;
+	padding-right: 2%;
+}
+
+div#officeBanner_holder svg
+{
+	cursor: default;
+	animation: svg_animation_banner_reverse 0.5s ease-in-out;
+	filter: grayscale(100%);
+}
+
+@keyframes svg_animation_banner_reverse
+{
+	from{filter: grayscale(0%);}
+	to{filter: grayscale(100%)}
+}
+
+div#officeBanner_holder svg:hover
+{
+	cursor: pointer;
+	animation: svg_animation_banner 0.25s ease-in-out;
+	filter: grayscale(0%);
+}
+
+@keyframes svg_animation_banner
+{
+	0%{
+		filter: grayscale(100%);
+	}
+	
+	100%{
+		filter: grayscale(0%);
+	}
+}
+
+/* Mayor's Banner Effect */
+svg#mayor:hover g#mayor_animate *
+{
+	animation: svg_mayor_animation 1s ease-in;
+	stroke: #ffee82;
+}
+
+@keyframes svg_mayor_animation
+{
+	0%
+	{
+		stroke: black;
+	}
+	
+	25%
+	{
+		stroke: black;
+	}
+	
+	27%
+	{
+		stroke: #ffee82;
+	}
+	
+	39%
+	{
+		stroke: black;
+	}
+	
+	42%
+	{
+		stroke: #ffee82;
+	}
+	
+	50%{
+		stroke: black;
+	}
+	
+	59%{
+		stroke: #ffee82;
+	}
+		
+	75%{
+		stroke: black;
+	}
+	
+	89%{
+		stroke: #ffee82:
+	}
+	
+	95%{
+		stroke: black;
+	}
+	
+	100%{
+		stroke: #ffee82;
+	}
+}
+	
+svg#mayor:hover g#mayor_text_animate *
+{
+	animation: svg_mayor_text_animation 3s ease-in;
+	stroke: #fff238;
+	delay: 1s;
+	stroke-width: 3px;
+}
+
+@keyframes svg_mayor_text_animation
+{
+	0%{
+		stroke: black;
+	}
+	
+	50%{
+		stroke: #c9b847;
+		fill: red;
+	}
+	
+	100%{
+		stroke: #fff238;
+	}
+}
+
+/* Accounting's Banner Effect */
+svg#accounting:hover g#accounting_text path
+{
+	animation: accounting_text_animate  1s ease-in-out;
+	fill: #09676B;
+	stroke: #003366;
+	stroke-width: 1px;
+}
+
+@keyframes accounting_text_animate
+{
+	0%{
+		fill: black;
+		stroke: black;
+		stroke-width: 1px;
+	}
+	
+	100%{
+		fill: #09676B;
+		stroke: #003366;
+		stroke-width: 1px;
+	}
+}
+
+rect#accounting_rect1
+{
+	transform: rotate(180deg);
+	transform-origin: 76.75% 72%;
+}
+
+rect#accounting_rect2
+{
+	transform: rotate(180deg);
+	transform-origin: 80.2% 61%;
+}
+
+rect#accounting_rect3
+{
+	transform: rotate(180deg);
+	transform-origin: 83.7% 67%;
+}
+
+rect#accounting_rect4
+{
+	transform: rotate(180deg);
+	transform-origin: 88.4% 72.3%;
+}
+
+rect#accounting_rect5
+{
+	transform: rotate(180deg);
+	transform-origin: 92.6% 64.5%;
+}
+
+svg#accounting:hover rect#accounting_rect1
+{
+	animation: accounting_bars_animation 10s steps(25, end) 0s infinite;
+	animation-duration: 5s;
+}
+
+svg#accounting:hover rect#accounting_rect2
+{
+	animation: accounting_bars_animation 10s steps(25, end) 0s infinite;
+	animation-duration: 7.5s;
+}
+
+svg#accounting:hover rect#accounting_rect3
+{
+	animation: accounting_bars_animation 10s steps(25, end) 0s infinite;
+	animation-duration: 9s;
+}
+
+svg#accounting:hover rect#accounting_rect4
+{
+	animation: accounting_bars_animation 10s steps(25, end) 0s infinite;
+	animation-duration: 6s;
+}
+
+svg#accounting:hover rect#accounting_rect5
+{
+	animation: accounting_bars_animation 10s steps(25, end) 0s infinite;
+	animation-duration: 4.5;
+}
+
+@keyframes accounting_bars_animation
+{
+	0%{
+		height: 26px;
+		fill: #44803C;
+	}
+	
+	4%{
+		height: 7px;
+		fill: #DA2027;
+	}
+	
+	7%{
+		height: 32px;
+		fill: #1AA14A;
+	}
+	
+	10%{
+		height: 20px;
+		fill: #74602A;
+	}
+	
+	17%{
+		height: 16px;
+		fill: #934A21;
+	}
+	
+	20%{
+		height: 18px;
+		fill: #845526;
+	}
+	
+	25%{
+		height: 27px;
+		fill: #3A853F;
+	}
+	
+	29%{
+		height: 2px;
+		fill: #ED1F24;
+	}
+	
+	36%{
+		height: 26px;
+		fill: #44803C;
+	}
+	
+	39%{
+		height: 14px;
+		fill: #A34123;
+	}
+	
+	41%{
+		height: 19px;
+		fill: #7C5A29;
+	}
+	
+	46%{
+		height: 3px;
+		fill: #ED1C24;
+	}
+	
+	50%{
+		height: 13px;
+		fill: #A93B24;
+	}
+	
+	52%{
+		height: 3px;
+		fill: #ED1C24;
+	}
+	
+	58%{
+		height: 26px;
+		fill: #44803C;
+	}
+	
+	60%{
+		height: 21px;
+		fill: #6D652D;
+	}
+	
+	63%{
+		height: 32px;
+		fill: #1AA14A;
+	}
+	
+	65%{
+		height: 11px;
+		fill: #B93226;
+	}
+	
+	69%{
+		height: 26px;
+		fill: #44803C;
+	}
+	
+	72%{
+		height: 15px;
+		fill: #9B4522;
+	}
+	
+	75%{
+		height: 9px;
+		fill: #C92727;
+	}
+	
+	79%{
+		height: 22px;
+		fill: #656A30;
+	}
+	
+	82%{
+		height: 16px;
+		fill: #934A21;
+	}
+	
+	86%{
+		height: 30px;
+		fill: #219647;
+	}
+	
+	89%{
+		height: 5px;
+		fill: #E81D25;
+	}
+	
+	91%{
+		height: 9px;
+		fill: #C92727;
+	}
+	
+	93%{
+		height: 19px;
+		fill: #7C5A29;
+	}
+	
+	94%{
+		height: 5px;
+		fill: #E81D25;
+	}
+	
+	96%{
+		height: 35px;
+		fill: #1EB150;
+	}
+	
+	98%{
+		height: 29px;
+		fill: #259145;
+	}
+	
+	99%{
+		height: 20px;
+		fill: #74602A;
+	}
+	
+	100%{
+		height: 26px;
+		fill: #44803C;
+	}
+}
+
+/* Health's Banner Effect */
+svg#health:hover ellipse#health_blue_light
+{
+	animation: health_blue_light_animate 1s infinite ease-in-out;
+}
+
+@keyframes health_blue_light_animate
+{
+	0%
+	{
+		opacity: 0.5;
+	}
+	
+	25%
+	{
+		opacity: 0;
+	}
+	
+	50%
+	{
+		opacity: 0.5;
+	}
+	
+	75%
+	{
+		opacity: 0;
+	}
+	
+	100%
+	{
+		opacity: 0.5;
+	}
+}
+
+svg#health:hover ellipse#health_red_light
+{
+	animation: health_red_light_animate 1s infinite ease-in-out;
+}
+
+@keyframes health_red_light_animate
+{
+	0%
+	{
+		opacity: 0;
+	}
+	
+	25%
+	{
+		opacity: 0.5;
+	}
+	
+	50%
+	{
+		opacity: 0;
+	}
+	
+	75%
+	{
+		opacity: 0.5;
+	}
+	
+	100%
+	{
+		opacity: 0;
+	}
+}
+
+svg#health:hover polygon#health_symbol
+{
+	opacity: 0.2;
+	animation: health_symbol_animate 1s infinite ease-in-out;
+}
+
+@keyframes health_symbol_animate
+{
+	0%{
+		fill: blue;
+		stroke: blue;
+	}
+	
+	25%{
+		fill: red;
+		stroke: red;
+	}
+	
+	50%{
+		fill: blue;
+		stroke: blue;
+	}
+	
+	75%{
+		fill: red;
+		stroke: red;
+	}
+	
+	100%{
+		fill: blue;
+		stroke: blue;
+	}
+}
+
+svg#health:hover g#health_symbol_effect path
+{
+	opacity: 0.05;
+	animation: health_symbol_effect_animate 0.5s infinite ease-in-out;
+}
+
+@keyframes health_symbol_effect_animate
+{
+	0%{
+		fill: blue;
+	}
+	
+	50%{
+		fill: red;
+	}
+	
+	100%{
+		fill:blue;
+	}
+}
+
+svg#health:hover g#health_text path
+{
+	animation: health_text_animate 1s ease-in-out;
+	fill: #11D1CD;
+	stroke: #292a4a;
+}
+
+@keyframes health_text_animate
+{
+	0%{
+		fill: black;
+		stroke: black;
+	}
+	
+	100%{
+		fill: #11D1CD;
+		stroke: #292a4a;
+	}
+}
+
+svg#health:hover g#health_text path#health_last_letter_shadow
+{
+	opacity: 0.08;
+	animation: health_last_letter_shadow_animate 0.5s infinite ease-in-out;
+}
+
+@keyframes health_last_letter_shadow_animate
+{
+	0%{
+		fill: blue;
+		stroke: blue;
+	}
+	
+	50%{
+		fill: none;
+		stroke: none;
+	}
+	
+	100%{
+		fill: blue;
+		stroke: blue;
+	}
+}
+
+/* Agriculture's Banner Effect */
+svg#agriculture:hover g#agriculture_leaf
+ {
+	 transform-origin: 91.3% 51%;
+	 animation: agriulture_leaf_animate 10s infinite ease-in-out;
+ }
+ 
+@keyframes agriulture_leaf_animate
+{
+	0%{
+		transform: rotate(0deg);
+	}
+	
+	10%{
+		transform: rotate(10deg);
+	}
+	
+	30%{
+		transform: rotate(-5deg);
+	}
+	
+	40%{
+		transform: rotate(2deg);
+	}
+	
+	45%{
+		transform: rotate(-6deg);
+	}
+	
+	60%{
+		transform: rotate(5deg);
+	}
+	
+	70%{
+		transform: rotate(-3deg);
+	}
+	
+	80%{
+		transform: rotate(2deg);
+	}
+	
+	90%{
+		transform: rotate(-3deg);
+	}
+	
+	100%{
+		transform: rotate(0deg);
+	}
+}
+
+svg#agriculture:hover g#agriculture_fish
+{
+	transform-origin: 88% 50%;
+	animation: agriculture_fish_animate 4s infinite ease-in-out;
+}
+
+@keyframes agriculture_fish_animate
+{
+	0%{
+		transform: rotate(0deg);
+	}
+	
+	50%{
+		transform: rotate(5deg);
+	}
+	
+	100%{
+		transform: rotate(0deg);
+	}
+}
+
+
+svg#agriculture:hover path#agriculture_vine
+{
+	transform-origin: 87.4% 53%;
+	animation: agriculture_vine_animate 5s infinite ease-in-out;
+}
+
+@keyframes agriculture_vine_animate
+{
+	0%{
+		transform: rotate(0deg);
+	}
+	
+	50%{
+		transform: rotate(10deg);
+	}
+	
+	100%{
+		transform: rotate(0deg);
+	}
+}
+
+svg#agriculture:hover g#agriculture_text path
+{
+	animation: agriculture_text_animate 1s ease-in-out;
+	fill: #39b828;
+}
+
+@keyframes agriculture_text_animate
+{
+	from{fill: black;}
+	to{ fill: #39b828;}
+}
+
+/* HRMO's Banner Effect */
+svg#hrmo:hover circle#humanHead1
+{
+	animation: hrmo_head1_animation 1s ease-in-out infinite;
+}
+
+@keyframes hrmo_head1_animation
+{
+	0%{
+		fill: #5FFF6D;
+	}
+	
+	50%{
+		fill: #d2ff0a;
+	}
+	
+	100%{
+		fill: #5FFF6D;
+	}
+}
+
+svg#hrmo:hover circle#humanHead2
+{
+	animation: hrmo_head2_animation 1s ease-in-out infinite;
+}
+
+@keyframes hrmo_head2_animation
+{
+	0%{
+		fill: #ff600a;
+	}
+	
+	50%{
+		fill: #5FFF6D;
+	}
+	
+	100%{
+		fill: #ff600a;
+	}
+}
+
+path#hrmo_smile
+{
+	fill: #46c43d;
+	opacity: 0;
+}
+
+svg#hrmo:hover path#hrmo_smile
+{
+	animation: hrmo_smile_animate 2s ease-in-out;
+}
+
+@keyframes hrmo_smile_animate
+{
+	0%{
+		opacity: 0;
+	}
+	
+	50%{
+		opacity: 1;
+	}
+	
+	100%{
+		opacity: 0;
+	}
+}
+
+svg#hrmo:hover g#hrmo_text
+{
+	animation: hrmo_text_animation 1s ease-in-out;
+	fill: #6ee665;
+}
+
+@keyframes hrmo_text_animation
+{
+	0%{
+		fill: black;
+	}
+	
+	100%{
+		fill: #6ee665;
+	}
+}
+
+/* Assessor's Banner Effect */
+svg#assessor:hover polyline#assessor_check
+{
+	animation: assessor_check_animate 2s ease-in-out;
+	stroke-width: 5px;
+}
+
+@keyframes assessor_check_animate
+{
+	0%{
+		stroke-width: 1px;
+	}
+	
+	100%{
+		stroke-width: 5px;
+	}
+}
+
+svg#assessor:hover g#assessor_text path
+{
+	animation: assessor_text_animate 1s ease-in-out;
+	fill: #00faff;
+	stroke-width: 1px;
+}
+
+@keyframes assessor_text_animate
+{
+	0%{
+		fill: black;
+		stroke-width: 0px;
+	}
+	
+	100%{
+		fill: #00faff;
+		stroke-width: 1px;
+	}
+}
+
+/* MPDC's Banner Effect */
+svg#mpdc:hover g#mpdc_plan > g, svg#mpdc:hover g#mpdc_house
+{
+	animation: mpdc_plan_animate 0.5s ease-in-out;
+	opacity: 0;
+}
+
+@keyframes mpdc_plan_animate
+{
+	from{opacity: 1;}
+	
+	to{opacity: 0;}
+}
+
+svg#mpdc:hover g#mpdc_plan > g#mpdc_schematic
+{
+	animation: mpdc_schematic_animate 1s ease-in-out forwards;
+}
+
+@keyframes mpdc_schematic_animate
+{
+	0%{opacity: 1;}
+	50%{opacity: 0;}
+	100%{opacity: 1;}
+}
+
+svg#mpdc:hover g#mpdc_schematic > polyline
+{
+	animation: mpdc_schematic_line_animate 1s ease-in-out forwards;			
+}
+
+@keyframes mpdc_schematic_line_animate
+{
+	50%{stroke: black;}
+	100%{stroke: red;}
+}
+
+svg#mpdc:hover g#mpdc_plan > g#mpdc_scribble
+{
+	animation: mpdc_scribble_animate 1s 0.5s ease-in-out forwards;
+}
+
+@keyframes mpdc_scribble_animate
+{
+	0%{opacity: 0;}
+	100%{opacity: 1;}
+}
+
+svg#mpdc:hover g#mpdc_text
+{
+	animation: mpdc_text_animate 3s ease-in-out;
+	fill: #6bdfff;
+}
+
+@keyframes mpdc_text_animate
+{
+	from{
+		fill: black;
+	}
+	
+	to{
+		fill: #6bdfff;
+	}
+}
+
+svg#mpdc:hover g#mpdc_plan > g#mpdc_house
+{
+	animation: mpdc_houseSketch_animate 1s 1s ease-in-out forwards;
+}
+
+@keyframes mpdc_houseSketch_animate
+{
+	0%{opacity: 0;}
+	100%{opacity: 1;}
+}
+
+svg#mpdc:hover g#mpdc_house
+{
+	animation: mpdc_house_animate 1s 1.5s ease-in-out forwards;
+}
+
+@keyframes mpdc_house_animate
+{
+	0%{opacity: 0;}
+	100%{opacity: 1;}
+}
+
+svg#mpdc:hover g#mpdc_paperCash > g
+{
+	animation: mpdc_pesoSymbol_animate 1s 1s ease-in-out forwards;
+}
+
+@keyframes mpdc_pesoSymbol_animate
+{
+	0%{fill: black;}
+	100%{fill: #2a822b;}
+}
+
+/* Budget's Banner Effect */
+svg#budget:hover g#budget_text > path
+{
+	animation: budget_text_animate 1s ease-in-out forwards;
+}
+
+@keyframes budget_text_animate
+{
+	0%{ fill: black; }
+	100%{ fill: yellow;}
+}
+
+svg#budget:hover g#budget_calc > path#dial_btn
+{
+	animation: budget_press_animate 0.5s ease-in-out infinite;
+}
+
+@keyframes budget_press_animate
+{
+	0%{ fill: #453FFF; }
+	49%{ fill: #453FFF; }
+	50%{ fill: #3aff33;}
+	100%{ fill: #3aff33;}
+}
+
+svg#budget:hover g#budget_calc > path#dial_btn2
+{
+	animation: budget_press_animate1  0.5s 0.5s ease-in-out infinite;
+}
+
+@keyframes budget_press_animate1
+{
+	0%{ fill: #3aff33;}
+	49%{ fill: #3aff33;}
+	50%{ fill: #453FFF; }
+	100%{ fill: #453FFF; }
+}
+
+svg#budget:hover g#budget_calc > path#calc_scrn
+{
+	animation: budget_scrn_animate 0.25s ease-in-out infinite;
+}
+
+@keyframes budget_scrn_animate
+{
+	0%{ fill: #002C37;}
+	49%{ fill: #002C37;}
+	50%{ fill: #046178; }
+	70%{ fill: #046178; }
+	71%{ fill: #002C37; }
+	100%{ fill: #002C37 }
+	
+}
+
+
+/* MSWDO's Banner Effect */
+svg#mswdo:hover g#mswdo_text > path
+{
+	animation: mswdo_text_animate 1s ease-in-out forwards;
+} 
+
+@keyframes mswdo_text_animate
+{
+	0%{ fill:black; }
+	100%{ fill:#4BB3FF; }
+}
+
+/* Civil Registrar's Banner Effect */
+svg#civilregistrar:hover g#civilregistrar_text > path
+{
+	animation: civilregistrar_text_animate 1s ease-in-out forwards;
+}
+
+@keyframes civilregistrar_text_animate
+{
+	0%{ fill: black; }
+	100%{ fill: #1900A0; }
+}
+
+/* Treasurer's Banner Effect */
+svg#treasurer:hover g#treasurer_text > path
+{
+	animation: treasurer_text_animate 1s ease-in-out forwards;
+}
+
+@keyframes treasurer_text_animate
+{
+	0%{ fill:black; }
+	100%{ fill:#1900F0; }
+}
+
+svg#treasurer:hover path#treasurer_lock
+{
+	transform-origin: 80% 35%;
+	animation: treasurer_lock_animate 1s ease-in-out infinite;
+}
+
+@keyframes treasurer_lock_animate
+{
+	0%{ fill:#FBB03B; }
+	49%{ fill:#FBB03B; }
+	50%{ fill:yellow; }
+	100%{ fill:yellow; }
+}
+
+/* Cadrresmo's Banner Effect */
+svg#cadrresmo:hover g#cadrresmo_text
+{
+	animation: cadrresmo_text_animate 1s ease-in-out forwards;
+}
+
+@keyframes cadrresmo_text_animate
+{
+	0%{ fill:black; }
+	100%{ fill:#10BCDA; }
+}
+
+svg#cadrresmo:hover polygon#cadrresmo_lightningLeft
+{
+	animation: cadrresmo_lightningLeft_animate 5s 0.5s ease-in-out infinite;
+}
+
+@keyframes cadrresmo_lightningLeft_animate
+{
+	0%{ opacity:0; }
+	5%{ opacity:0; }
+	6%{ opacity:1; }
+	8%{ opacity:1; }
+	9%{ opacity:0; }
+	13%{ opacity:0; }
+	14%{ opacity:1; }
+	19%{ opacity:1; }
+	20%{ opacity:0; }
+	23%{ opacity:0; }
+	24%{ opacity:1; }
+	30%{ opacity:1; }
+	31%{ opacity:0; }
+	35%{ opacity:0; }
+	36%{ opacity:1; }
+	50%{ opacity:0; }
+	62%{ opacity:0; }
+	63%{ opacity:1; }
+	65%{ opacity:1; }
+	66%{ opacity:0; }
+	70%{ opacity:0; }
+	71%{ opacity:1; }
+	78%{ opacity:1; }
+	79%{ opacity:0; }
+	83%{ opacity:0; }
+	84%{ opacity:1; }
+	89%{ opacity:1; }
+	90%{ opacity:0; }
+	94%{ opacity:0; }
+	95%{ opacity:1; }
+	97%{ opacity:1; }
+	100%{ opacity:0; }
+}
+
+svg#cadrresmo:hover polygon#cadrresmo_lightningRight
+{
+	animation: cadrresmo_lightningRight_animate 3s 0.25s ease-in-out infinite;
+}
+
+@keyframes cadrresmo_lightningRight_animate
+{
+	0%{ opacity:0; }
+	5%{ opacity:0; }
+	6%{ opacity:1; }
+	8%{ opacity:1; }
+	9%{ opacity:0; }
+	13%{ opacity:0; }
+	14%{ opacity:1; }
+	19%{ opacity:1; }
+	20%{ opacity:0; }
+	23%{ opacity:0; }
+	24%{ opacity:1; }
+	30%{ opacity:1; }
+	31%{ opacity:0; }
+	35%{ opacity:0; }
+	36%{ opacity:1; }
+	50%{ opacity:0; }
+	62%{ opacity:0; }
+	63%{ opacity:1; }
+	65%{ opacity:1; }
+	66%{ opacity:0; }
+	70%{ opacity:0; }
+	71%{ opacity:1; }
+	78%{ opacity:1; }
+	79%{ opacity:0; }
+	83%{ opacity:0; }
+	84%{ opacity:1; }
+	89%{ opacity:1; }
+	90%{ opacity:0; }
+	94%{ opacity:0; }
+	95%{ opacity:1; }
+	97%{ opacity:1; }
+	100%{ opacity:0; }
+}
+
+svg#cadrresmo:hover path#cadrresmo_cloud
+{
+	animation: cadrresmo_cloud_animate 5s 0.25s ease-in-out infinite;
+}
+
+@keyframes cadrresmo_cloud_animate
+{
+	0%{ opacity:0.5; }
+	15%{ opacity:1; }
+	23%{ opacity:0.4; }
+	29%{ opacity:0.8; }
+	30%{ opacity:0.4; }
+	31%{ opacity:0.5; }
+	46%{ opacity:1; }
+	54%{ opacity:0.4; }
+	60%{ opacity:0.8; }
+	61%{ opacity:0.4; }
+	62%{ opacity:0.5; }
+	77%{ opacity:1; }
+	85%{ opacity:0.4; }
+	91%{ opacity:0.8; }
+	100%{ opacity:0.4; }
+}
+
+/* SB's Banner Effect */
+svg#sb:hover g#sb_text
+{
+	animation: sb_text_animate 1s 0.5s ease-in-out forwards;
+}
+
+@keyframes sb_text_animate
+{
+	0%{ fill: black }
+	100%{fill: #10ECDE; }
+}
+
+/* Engineer's Banner Effect */
+svg#engineer:hover g#engineer_text
+{
+	animation: engineer_text_animate 1s 0.5s ease-in-out forwards;
+}
+
+@keyframes engineer_text_animate
+{
+	0%{ fill:black; }
+	4%{ fill:black; }
+	5%{ fill:#E0B400; }
+	9%{ fill:#E0B400; }
+	10%{ fill:black; }
+	20%{ fill:black; }
+	21%{ fill:#E0B400; }
+	40%{ fill: #E0B400; }
+	41%{ fill:black; }
+	60%{ fill:black; }
+	100%{ fill:#E0B400; }
+}
+
+svg#engineer:hover rect#engineer_windows1
+{
+	animation: engineer_windows1_animate 2s ease-in-out infinite;
+}
+
+@keyframes engineer_windows1_animate
+{
+	0%{ fill:white; }
+	10%{ fill:white; }
+	11%{ fill:yellow; }
+	21%{ fill:yellow; }
+	22%{ fill:white; }
+	32%{ fill:white; }
+	33%{ fill:yellow; }
+	43%{ fill:yellow; }
+	44%{ fill:white; }
+	54%{ fill:white; }
+	55%{ fill:yellow; }
+	65%{ fill:yellow; }
+	66%{ fill:white; }
+	76%{ fill:yellow; }
+	77%{ fill:yellow; }
+	87%{ fill:white; }
+	88%{ fill:white; }
+	98%{ fill:yellow; }
+	100%{ fill:yellow; }
+}
+
+svg#engineer:hover rect#engineer_windows2
+{
+	animation: engineer_windows2_animate 1s ease-in-out infinite;
+}
+
+@keyframes engineer_windows2_animate
+{
+	0%{ fill:white; }
+	10%{ fill:white; }
+	11%{ fill:yellow; }
+	21%{ fill:yellow; }
+	22%{ fill:white; }
+	32%{ fill:white; }
+	33%{ fill:yellow; }
+	43%{ fill:yellow; }
+	44%{ fill:white; }
+	54%{ fill:white; }
+	55%{ fill:yellow; }
+	65%{ fill:yellow; }
+	66%{ fill:white; }
+	76%{ fill:yellow; }
+	77%{ fill:yellow; }
+	87%{ fill:white; }
+	88%{ fill:white; }
+	98%{ fill:yellow; }
+	100%{ fill:yellow; }
+}
+/* Cameu's Banner Effect */
+svg#cameu:hover g#cameu_text
+{
+	animation: cameu_text_animate 1s ease-in-out forwards;
+}
+
+@keyframes cameu_text_animate
+{
+	0%{ fill: black; }
+	100%{ fill:#FFB991; }
+}
+
+
+/* Tourism's Banner Effect */
+svg#tourism:hover g#tourism_text
+{
+	animation: tourism_text_animate 1s ease-in-out forwards;
+}
+
+@keyframes tourism_text_animate
+{
+	0%{ fill:#333333; }
+	100%{ fill:#FFFFEA; }
+}

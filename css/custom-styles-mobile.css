@@ -1,0 +1,63 @@
+@media only screen and (max-width: 1024px)
+{
+	img.thumbnail
+	{
+		display: none;
+	}
+	
+	div#off-canvas-container
+	{
+		background: linear-gradient(to top, #cfe3ff 00%, #1e60bd 80%, #01214f  100%);
+		font-weight:800;
+	}
+	
+	div.is-drilldown
+	{
+		font-weight:800;
+	}
+	
+	nav#offCanvasRight.is-open
+	{
+		z-index: 99999999!important;
+		background: linear-gradient(to top, #cfe3ff 0%, #1e60bd 80%, #01214f  100%)!important;
+		height: auto!important;
+	}
+	
+	div.off-canvas-wrapper
+	{
+		background:  #cfe3ff!important;
+	}
+	
+	li.js-drilldown-back a 
+	{
+		color: #ff500a!important;
+	}
+	
+	ul.vertical.menu li ul li.js-drilldown-back a:hover 
+	{
+		color: #127bfc!important;
+		transition: 0.5s!important;
+	}
+	
+	.is-drilldown ul li a, .is-drilldown ul li, div.list-item
+	{
+		background:none!important;
+	}
+	
+	.is-drilldown ul li ul
+	{
+		background: linear-gradient(to top, #cfe3ff 0%, #1e60bd 80%, #213C76 100%)!important;
+	}
+	
+	.is-drilldown ul li a:hover
+	{
+		background-image:radial-gradient(farthest-corner,rgb(239, 234, 50),rgb(233, 166, 67) 100%)!important;
+		color: white!important;
+		transition: 0.5s!important;
+	}
+	
+	li#aux-offmenu.list-item
+	{
+		display: none!important;
+	}
+}

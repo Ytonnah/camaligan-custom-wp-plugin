@@ -1,0 +1,54 @@
+/* CSS for Accessibility Contrast Button*/
+@media only screen and (min-width: 1025px)
+{
+	#accessibility-contrast
+	{
+		display: none;
+		height: 0px;
+	}
+
+	/*CSS for the Main Navigation Bar and Secondary Navigation Bar*/
+	nav.top-bar-left, nav#aux-main
+	{
+		padding-left: 70px;
+	}
+
+	#main-nav 
+	{
+		background: linear-gradient(to top, #cfe3ff 0%, #1e60bd 80%, #01214f  100%);
+		font-weight:700;
+		transition: 2s;
+	}
+
+	#accessibility-button 
+	{
+		background: linear-gradient(to top, #cfe3ff 0%, #1e60bd 80%, #01214f  100%);
+		border:none;
+		height: 57.5px;
+	}
+
+	#auxiliary
+	{
+		background: linear-gradient(to top, #ffffff 0%, #f7fbff 30%, #e6f1ff  100%)!important;
+		font-weight: 700;
+		border: solid 1px #c9c7c7;
+		border-right: none;
+	}
+
+	.container-masthead
+	{
+		background: #edf5ff!important;
+	}
+
+	.columns nav ul li a:hover, .columns nav ul li button#accessibility-button:hover  {
+		background-image:radial-gradient(farthest-corner,rgb(239, 234, 50),rgb(233, 166, 67) 100%)!important;
+		color: white!important;
+		transition: .4s;
+	}
+
+	li.current-menu-item > a
+	{
+		background-color: 
+	#fffb8c!important;
+	}
+}

@@ -1,0 +1,662 @@
+/*The CSS for the Container Banner of all Pages*/
+.container-banner {
+	display: none;
+}
+
+.banner-pads {
+	display: none;
+}
+
+/*The CSS for The Page Title*/
+.mainpage-Title-Header
+{
+	font-family: 'Bahnschrift Condensed', Arial;
+	font-weight: 900;
+	font-size: 30px;
+	animation: shadow-mover 6s infinite ease-in;
+}
+
+@keyframes shadow-mover 
+{
+	0% {
+		text-shadow: 0px 0px 5px #330000;
+		letter-spacing: 10px;
+		color: white;
+	}
+	
+	25% {
+		text-shadow: 0px 0px 10px #00330d;
+		color: orange;
+	}
+	
+	50% {
+		text-shadow: 0px 0px 15px #001333;
+		letter-spacing: 9.75px;
+		color: red;
+	}
+	
+	75% {
+		text-shadow: 0px 0px 10px #330000;
+		color: orange;
+	}
+	
+	100% {
+		text-shadow: 0px 0px 5px #330000;
+		letter-spacing: 10px;
+		color: white;
+	}
+}
+
+.mainpage-Title-SubHeader
+{
+	color: white;
+	font-family: Calibri, Arial;
+	font-size: 25px;
+	font-weight: 600;
+}
+
+
+.Content-Header {
+	font-family: Arial;
+	font-size: 30px;
+	color: #262b40;
+	font-weight: 900;
+	text-align: center;
+	text-shadow: 1px 2px 5px #1a4796;
+}
+
+/*The CSS for Primary Header of of the Page*/
+.Sub-Content-Header {
+	font-family: Serif;
+	font-size: 25px;
+	color: #a35100;
+	text-decoration: underline;
+	font-weight: 600;
+	text-align: center;
+	text-shadow: 0px 0px 10px #d99527;
+}
+
+/*The CSS for the Secondary Header of the Page*/
+.Sub-Sub-Content-Header {
+	font-family: Arial;
+	font-size: 20px;
+	color: #8b0000;
+	font-style: Italic;
+	font-weight: 900;
+	text-align: Left;
+}
+
+/*The CSS for the contents of the Pages. e.g. paragraphs*/
+.Paragraph {
+	font-family: Helvetica;
+	font-size: 16px;
+	color: #323232;
+	text-align: justify;
+}
+
+/*The First Letter of Paragraphs*/
+.FirstLetterParagraph {
+	font-family: 'Old English Text MT', Arial;
+	font-weight: 700;
+	font-size: 35px;
+	padding-left: 5%;
+	font-style: Italic;
+	color: #022b23;
+}
+
+/* The CSS for the Main Content of the website*/
+.container-main
+{
+
+}
+
+/*CSS of All SVG Files*/
+svg 
+{
+	display: block;
+	margin: auto;
+	width: 100%;
+}
+
+/*CSS for BreadCrumbs and its content*/
+.breadcrumbs
+{
+	border-width: 3px; 
+	font-weight: 700;
+	border-color: rgba(0,50,200,0.25);
+	background-color: rgba(20,220,110,0.1);
+}
+
+/* Shortcode Ultimate Tabs CSS */
+div.su-tabs-nav
+{
+	background-color: rgba(23, 35, 92,0.8);
+}
+
+div.su-tabs-nav span
+{
+	color: rgb(252, 209, 38)!important;
+	font-weight: 600;
+}
+
+div.su-tabs-pane
+{
+	border: solid 3px rgba(23, 35, 92,0.8);
+	border-top: none;
+}
+
+div span.su-tabs-current
+{
+	color: #000000!important;
+	font-weight: 900;
+	border: solid 3px rgba(23, 35, 92,0.8);
+	border-bottom: none;
+}
+
+/*CSS for the widgets in Posts, Blogs and event pages*/
+
+aside#sidebar-right
+{
+	border-style: solid;
+	border-color: #4054b2;
+	box-shadow: 0px 0px 10px 0px 	#000000;
+	padding: 0;
+	margin: 0;
+}
+
+aside#media_image-2, aside#govph_widget_pst-15, aside#calendar-2, aside#categories-2,aside#media_image-3, aside#govph_widget_pst-16, aside#calendar-3, aside#categories-4,aside#tribe-events-list-widget-2
+{
+	padding: 10px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #8f7107;
+	width: auto;
+}
+
+aside#media_image-2 img, aside#media_image-3 img 
+{
+	display: block;
+	margin: auto;
+	width: 80%;
+}
+
+aside#tribe-events-list-widget-2 > p, aside#categories-4 > ul > li
+{
+	font-family: 'Times New Roman', Arial;
+	text-align: left;
+}
+
+/* CSS for Widget Titles and its contents*/
+div > div > div > div > div > div > div > h3.widget-title, aside > h3.widget-title
+{
+	font-family: 'Squada One', Arial;
+	color: white;
+	text-align: center;
+	background-color: #07035e;
+	border: solid;
+	border-color: #99a1a3;
+	text-shadow: 0px 0px 5px #ffb54d;
+	letter-spacing: 5px;
+}
+
+div > div > div > div > div > div > div > ul, div > div > div > div > div > div > div > p 
+{
+	text-align: left;
+	font-family: 'Squada One', 'Bahnschrift Condensed', Arial;
+}
+
+/*CSS for the Philippine Standard Time*/
+div#pst-container > div
+{
+	font-family: 'Bahnschrift Condensed', Arial;
+	font-size: 15px;
+	text-align: center;
+	text-decoration: underline;
+	background-color: #07035e;
+	color: white!important;
+	border: solid;
+	border-color: #99a1a3;
+	font-weight: 900;
+	text-shadow: 0px 0px 5px #ffb54d;
+}
+
+div#pst-container
+{
+	border: solid;
+	border-color: #99a1a3;
+}
+
+div#pst-container > div#pst-time
+{
+	font-family: Times New Roman, Arial;
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
+	text-decoration: none;
+	color: #03011f!important;
+	background-color: white;
+	border: none;
+}
+
+/* CSS for the WP - Calendar*/
+table#wp-calendar
+{
+	table-layout: fixed;
+	word-break: break-all;
+	margin-top: 10.5px;
+	margin-bottom: -5px;
+	border: solid;
+	border-color: #99a1a3;
+	font-size: 12px;
+	font-weight: 700;
+}
+
+table#wp-calendar td
+{
+	border: solid;
+	border-color: #99a1a3;
+	text-align: center;
+}
+
+table#wp-calendar > caption
+{
+	font-family: 'Bahnschrift Condensed', Arial, Helvetica;
+	font-size: 20px;
+	text-align: center;
+	margin-top: -4%;
+	background-color: #07035e;
+	color: white;
+	border: solid;
+	border-color: #99a1a3;
+	text-shadow: 0px 0px 5px #ffb54d;
+}
+
+td#today
+{
+	border-radius: 15px;
+	background-color: orange;
+	font-weight: 700;
+}
+
+td.pad
+{
+	background-color: #ced6d9;
+}
+
+td > a
+{
+	color: darkblue;
+	font-weight: 900;
+}
+
+/* CSS for the Barangay Officials Panel */
+h2.year_BaraOffi {
+				color:#033312;
+				font-family: Times New Roman;
+				font-size: 23px;
+				text-align: left;
+				cursor: pointer;
+				transition: 0.4s;
+		} 
+		
+		h2.year_BaraOffi:after {
+			content: '\02795';
+			font-size: 20px;
+			color: #777;
+			float: right;
+			margin-left: 5px;
+			padding-top:2px;
+		}
+		
+		h2.year_BaraOffi.active {
+			color: #1cd656;
+			transition: .3s;
+		}
+		
+		h2.year_BaraOffi.active:after {
+			content: "\2796";
+		}
+		
+		.Second_Header {
+			font-family: Times New Roman;
+			font-size: 20px;
+			color: #0d1766;
+			padding-left: 40px;
+			margin-bottom: 0px;
+		}
+		
+		.Bara_Name {
+			font-family: Times New Roman;
+			color: #000000;
+			font-size: 20px;
+			padding-left: 80px;
+			margin-bottom: 0px;
+			font-weight: 700;
+			text-shadow: 1px 1px 1px brown;
+		}
+		
+		div.panel {
+			max-height: 0;
+			overflow: hidden;
+			transition: 0.6s ease-in-out;
+			opacity: 0;
+		}
+		
+		div.panel.show {
+			opacity: 1;
+			max-height: 1000px;
+		}
+		
+		h2.year_BaraOffi2 {
+			color:#033312;
+			font-family: Times New Roman;
+			font-size: 23px;
+			text-align: right;
+			cursor: pointer;
+			transition: 0.4s;
+			
+		} 
+		
+		h2.year_BaraOffi2:after {
+			content: '\02795';
+			font-size: 20px;
+			color: #777;
+			float: left;
+			margin-right: 5px;
+			padding-top:2px;	
+		}
+		
+		
+		h2.year_BaraOffi2.active {
+			color: #1cd656;
+			transition: .3s;
+		}
+		
+		h2.year_BaraOffi2.active:after {
+			content: "\2796";
+		}
+		
+		.Second_Header2 {
+			font-family: Times New Roman;
+			font-size: 20px;
+			color: #0d1766;
+			text-align: right;
+			padding-right: 40px;
+			margin-bottom: 0px;
+		}
+		
+		.Bara_Name2 {
+			font-family: Times New Roman;
+			color: #000000;
+			font-size: 20px;
+			text-align: right;
+			padding-right: 80px;
+			margin-bottom: 0px;
+			font-weight: 700;
+			text-shadow: 1px 1px 1px brown;
+		}
+		
+		div.panel2 {
+			max-height: 0;
+			overflow: hidden;
+			transition: 0.6s ease-in-out;
+			opacity: 0;
+		}
+		
+		div.panel2.show {
+			opacity: 1;
+			max-height: 1000px;
+		}
+
+/* The CSS for the Logo Animation in Sidebar */
+img.logo-256,img.wp-image-368, .Camaligan_Logo
+{
+	-moz-animation: spinHorizontal 3s infinite linear;
+    -o-animation: spinHorizontal 3s infinite linear;    
+    -webkit-animation: spinHorizontal 3s infinite linear;
+    animation: spinHorizontal 3s infinite linear;
+}
+
+@keyframes spinHorizontal {
+    0% { transform: rotate(0deg); }
+	12% { transform: rotate(0deg); }
+	18% { transform: rotate(10deg); }
+	24% { transform: rotate(-10deg); }
+	30% { transform: rotate(8deg); }
+	36% { transform: rotate(-8deg); }
+	42% { transform: rotate(5deg); }
+	47% { transform: rotate(-5deg); }
+	52% { transform: rotate(2deg); }
+	56% { transform: rotate(-2deg); }
+	60% { transform: rotate(0deg); }
+		100% { transform: rotate(0deg); }
+}
+
+img.logo-256:hover,img.wp-image-368:hover, .Camaligan_Logo:hover
+{
+	-moz-animation-play-state: paused;
+	-o-animation-play-state: paused;
+	-webkit-animation-play-state: paused;
+	animation-play-state: paused;
+	opacity: .75;
+	filter: drop-shadow(0px 0px 10px #5d56e3);
+
+}
+
+/* The CSS for the Logo Animation of Transparency */
+img#tp-seal
+{
+	-moz-animation: spin 60s infinite linear;
+    -o-animation: spin 60s infinite linear;    
+    -webkit-animation: spin 60s infinite linear;
+    animation: spin 60s infinite linear;
+}
+
+#tp-seal:hover
+{
+	-moz-animation-play-state: paused;
+	-o-animation-play-state: paused;
+	-webkit-animation-play-state: paused;
+	animation-play-state: paused;
+	-moz-filter: drop-shadow(5px 5px 5px #666666);
+	-o-filter: drop-shadow(5px 5px 5px #666666);
+	-webkit-filter: drop-shadow(5px 5px 5px #666666);
+	filter: drop-shadow(5px 5px 5px #5d56e3);
+	opacity: .75;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* CSS for the Download Button */
+
+/* CSS for Awesome Weather Widget */
+
+
+
+/* CSS for the Page Navigation of the Website */
+div.wp-pagenavi span.pages
+{
+	background-color: #020014;
+	-moz-animation: color-changer 12s infinite linear;
+	-o-animation: color-changer 12s infinite linear;
+	-webkit-animation: color-changer 12s infinite linear;
+	animation: color-changer 12s infinite linear;
+}
+
+@keyframes color-changer
+{
+	0% {
+		background-color: #020014;
+		color: #ffffff;
+		border-color: #020014;
+	}
+	
+	25% {
+		background-color: #058708;
+		color: #000000;
+		border-color: #058708;
+	}
+	
+	50% {
+		background-color: #ccc90a;
+		color: #000000;
+		border-color: #ccc90a;
+	}
+	
+	75% {
+		background-color: #e33636;
+		color: #ababab;
+		border-color: #e33636;
+	}
+	
+	100% {
+		background-color: #020014;
+		color: #ffffff;
+		border-color: #020014;
+	}
+}
+
+div.wp-pagenavi  a.smaller, div.wp-pagenavi  a.larger, div.wp-pagenavi  span.current, div.wp-pagenavi a.nextpostslink, div.wp-pagenavi  a.previouspostslink
+{
+	-moz-animation: border-color-changer 12s infinite linear;
+	-o-animation: border-color-changer 12s infinite linear;
+	-webkit-animation: border-color-changer 12s infinite linear;
+	animation: border-color-changer 12s infinite linear;
+}
+
+@keyframes border-color-changer
+{
+	0% {
+		border-color: #020014;
+	}
+	
+	25% {
+		border-color: #058708;
+	}
+	
+	50% {
+		border-color: #ccc90a;
+	}
+	
+	75% {
+		border-color: #e33636;
+	}
+	
+	100% {
+		border-color: #020014;
+	}
+}
+
+div.wp-pagenavi  a.smaller, div.wp-pagenavi  a.larger, div.wp-pagenavi  span.current,
+div.wp-pagenavi span.pages,
+div.wp-pagenavi a.nextpostslink, div.wp-pagenavi  a.previouspostslink
+{
+	font-family: 'Bahnschrift Condensed', Arial;
+	font-weight: 900;
+	font-size: 20px;
+	border: solid 1px;
+}
+
+div.wp-pagenavi  a.netxpostslink
+{
+	color: DarkBlue;
+}
+
+div.wp-pagenavi  a.larger
+{
+	color: #2246BD;
+}
+
+div.wp-pagenavi  a.smaller
+{
+	color: #FC3A3A;
+}
+
+div.wp-pagenavi  a.previouspostslink
+{
+	color: DarkRed;
+}
+
+
+/* CSS for the Post Author */
+span.byline
+{
+	display: none;
+}
+
+
+div.downloadButton_holder
+{
+	width: 100%;
+}
+
+button.downloadButton
+{
+	width: 100%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #f4ff29;
+	border: solid;
+	border-width: 5px; 
+	border-radius: 30px;
+	border-color: #dae322;
+	font-weight: 900;
+}
+
+button.downloadButton:hover
+{
+	background-color: darkorange;
+	border-color: darkred;
+	text-align: center;
+	color: white;
+	font-weight: 600;
+}
+
+div.widget_recent_entries
+{
+	word-wrap: break-word!important;
+}
+
+a.moretag
+{
+	word-wrap: break-word;
+}
+
+/* The css for Content of Post Page */
+.entry-content
+{
+	word-wrap: break-word!important;
+	text-align: justify;
+}
+
+/* The css for Footer */
+#standard-footer
+{
+    display: none;
+}
+
+/* The css for Covid Vaccine Registration Form */
+li.menu-item.menu-item-type-post_type.menu-item-object-page.menu-item-4420 > a
+{
+    font-size: 15px!important;
+    color: #F8B453!important;
+}
+
+li.menu-item.menu-item-type-post_type.menu-item-object-page.menu-item-4420:hover > a
+{
+    color: #ff4400!important;
+}
+
+
+li.menu-item.menu-item-type-post_type.menu-item-object-page.menu-item-4420
+{
+    background-color: #074BAC;
+}
+
+.wp-block-image img {
+    display: flex;
+    margin: auto;
+}

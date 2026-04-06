@@ -1,0 +1,47 @@
+.c19-container{
+    margin: auto;
+    padding: 20px;
+    background-color: #cbf1f5;
+    position: absoluute;
+    left: 50%;
+}
+
+#c19-title {
+    text-align: center;
+}
+
+input#response-submit {
+    margin: auto;
+}
+
+.c19-container * td {
+    width: 50%;
+}
+
+#table3 * .value_field {
+    width: 75%!important;
+}
+
+@media only screen and ( min-width:883px ) and ( min-width: 1115px ) {
+    .c19-container {
+        width: 80%;
+    }
+    
+    #table1a, #table1b, #table2a, #table2b, #table4a, #table4b {
+        width: 50%;
+    }
+    
+    #table1a, #table2a, #table4a {
+        float:left;
+    }
+}
+
+@media only screen and ( max-width:882px ) {
+    .c19-container {
+        width: 100%;
+    }
+    
+    #table1a, #table1b, #table2a, #table2a {
+        width: 100%;
+    }
+}
