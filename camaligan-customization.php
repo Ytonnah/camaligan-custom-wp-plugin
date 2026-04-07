@@ -23,6 +23,7 @@
 	include("widget/office_banner/office_banner.php");
 	include("widget/wg_news_manager/init.php");
 	include("widget/bac_manager/init.php");
+	include("widget/annual_report_manager/init.php");
 	
 	
 	//Registering All Custom Widgets
@@ -79,7 +80,9 @@
 			add_menu_page("Camaligan's Custom Functions", "Camaligan's Custom Functions","manage_options", "camaligan-custom-function", "ccffunction", plugins_url('/camaligan-customization/icon.png'));
 			add_submenu_page("camaligan-custom-function", "Ordinance Manager", "Ordinance Manager", "manage_options", "ordinanceuploader", "ordinanceuploader");		  
 		
-			add_submenu_page("camaligan-custom-function", "News Manager", "News Manager", "manage_options", "newsuploader", "newsuploader");}
+			add_submenu_page("camaligan-custom-function", "News Manager", "News Manager", "manage_options", "newsuploader", "newsuploader");
+			add_submenu_page("camaligan-custom-function", "Annual Report Manager", "Annual Report Manager", "manage_options", "annualreportmanager", "annualreportmanager");
+		}
 
 		add_action("admin_menu", "customFunctions_menu");
 
@@ -91,6 +94,11 @@
 		function newsuploader()
 		{
 			include("widget/wg_news_manager/init.php");
+		}
+
+		function annualreportmanager()
+		{
+			render_annual_report_manager_page();
 		}
 		
 		function ccffunction()
