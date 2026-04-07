@@ -1,0 +1,175 @@
+/* Budget overview viewer styles */
+
+.budget-overview-viewer-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.budget-overview-viewer-header {
+    margin-bottom: 30px;
+}
+
+.budget-overview-viewer-header h2 {
+    color: #333;
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.budget-overview-controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.budget-overview-search-input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.budget-overview-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.budget-overview-empty {
+    padding: 40px;
+    text-align: center;
+    color: #666;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+.budget-overview-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+.budget-overview-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.budget-overview-title {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    font-weight: 600;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.budget-overview-meta {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.budget-overview-year,
+.budget-overview-date {
+    font-size: 13px;
+    color: #666;
+}
+
+.budget-overview-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: 20px;
+    flex-shrink: 0;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.btn-download {
+    background-color: #0073aa;
+    color: #fff;
+}
+
+.btn-download.disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .budget-overview-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .budget-overview-actions {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .budget-overview-controls {
+        flex-direction: column;
+    }
+
+    .budget-overview-search-input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .budget-overview-viewer-container {
+        padding: 10px;
+    }
+
+    .budget-overview-viewer-header h2 {
+        font-size: 24px;
+    }
+
+    .budget-overview-item {
+        padding: 15px;
+    }
+
+    .budget-overview-title {
+        font-size: 16px;
+    }
+
+    .budget-overview-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+

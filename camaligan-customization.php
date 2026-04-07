@@ -27,6 +27,7 @@
 	include("widget/annual_report_manager/init.php");
 	include("widget/wg_media_gallery/init.php");
 	include("widget/wg_beneficiaries_manager/init.php");
+	include("widget/budget_overview_manager/init.php");
 	
 	
 	//Registering All Custom Widgets
@@ -89,6 +90,8 @@
 			add_submenu_page("camaligan-custom-function", "Media Gallery", "Media Gallery", "manage_options", "mediagallery", "mediagallery");
 			add_submenu_page("camaligan-custom-function", "Beneficiaries", "Beneficiaries", "manage_options", "beneficiariesmanager", "beneficiariesmanager");
 		add_submenu_page("camaligan-custom-function", "Annual Report Manager", "Annual Report Manager", "manage_options", "annualreportmanager", "annualreportmanager");
+			// add_submenu_page("camaligan-custom-function", "Annual Report Manager", "Annual Report Manager", "manage_options", "annualreportmanager", "annualreportmanager");
+			add_submenu_page("camaligan-custom-function", "Budget Overview Manager", "Budget Overview Manager", "manage_options", "budgetoverviewmanager", "budgetoverviewmanager");
 		}
 
 		add_action("admin_menu", "customFunctions_menu");
@@ -130,6 +133,11 @@
 		function annualreportmanager()
 		{
 			render_annual_report_manager_page();
+		}
+
+		function budgetoverviewmanager()
+		{
+			render_budget_overview_manager_page();
 		}
 		
 		function ccffunction()
