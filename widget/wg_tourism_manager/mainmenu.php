@@ -51,6 +51,15 @@ $tourism_viewer = get_tourism_viewer();
 
     .tourism-tab-content {
         padding: 20px 0;
+        visibility: visible !important;
+    }
+
+    .tourism-tab-content[style*="display: none"] {
+        display: none !important;
+    }
+
+    .tourism-tab-content[style*="display: block"] {
+        display: block !important;
     }
 
     .tourism-admin-section {

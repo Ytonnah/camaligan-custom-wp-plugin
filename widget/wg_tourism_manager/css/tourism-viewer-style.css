@@ -1,25 +1,35 @@
 /* Tourism Viewer Styles */
 
+/* Ensure all elements are visible */
+.tourism-viewer-container * {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
 .tourism-viewer-container {
     max-width: 1400px;
     margin: 30px auto;
     padding: 20px;
+    display: block !important;
 }
 
 .tourism-viewer-header {
     margin-bottom: 30px;
+    visibility: visible !important;
 }
 
 .tourism-viewer-header h2 {
     color: #333;
     font-size: 28px;
     margin-bottom: 20px;
+    visibility: visible !important;
 }
 
 .tourism-controls {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
+    visibility: visible !important;
 }
 
 .tourism-search-input,
@@ -30,6 +40,8 @@
     font-size: 14px;
     font-family: inherit;
     transition: border-color 0.3s;
+    visibility: visible !important;
+    display: block !important;
 }
 
 .tourism-search-input {
@@ -53,6 +65,7 @@
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 25px;
     margin-bottom: 30px;
+    visibility: visible !important;
 }
 
 .tourism-item {
@@ -61,6 +74,7 @@
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
+    visibility: visible !important;
 }
 
 .tourism-item:hover {
@@ -74,6 +88,7 @@
     overflow: hidden;
     background: #e5e7eb;
     position: relative;
+    visibility: visible !important;
 }
 
 .tourism-image img {
@@ -81,14 +96,12 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s;
-}
-
-.tourism-item:hover .tourism-image img {
-    transform: scale(1.05);
+    visibility: visible !important;
 }
 
 .tourism-content {
     padding: 20px;
+    visibility: visible !important;
 }
 
 .tourism-header {
