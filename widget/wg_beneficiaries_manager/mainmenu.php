@@ -122,3 +122,4 @@ class Beneficiaries_Admin {
 
 // Initialize dashboard
 $beneficiaries_admin = new Beneficiaries_Admin();
+$beneficiaries_admin->display_dashboard();

@@ -25,11 +25,17 @@ function register_beneficiary_post_type() {
 
     $args = array(
         'labels' => $labels,
-        'public' => false,
+        'public' => true,
         'publicly_queryable' => true,
+        'show_ui' => true,
         'show_in_menu' => false,
-        'show_in_rest' => true,
+        'query_var' => true,
+        'rewrite' => array('slug' => 'beneficiary'),
+        'capability_type' => 'post',
+        'has_archive' => true,
+        'hierarchical' => false,
         'supports' => array('title', 'editor', 'thumbnail'),
+        'show_in_rest' => true,
         'can_export' => true,
     );
 

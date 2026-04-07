@@ -21,9 +21,17 @@ function register_media_gallery_post_type() {
 
     $args = array(
         'labels' => $labels,
-        'public' => false,
+        'public' => true,
+        'publicly_queryable' => true,
+        'show_ui' => true,
         'show_in_menu' => false,
-        'supports' => array('title', 'editor'),
+        'query_var' => true,
+        'rewrite' => array('slug' => 'media-gallery'),
+        'capability_type' => 'post',
+        'has_archive' => true,
+        'hierarchical' => false,
+        'supports' => array('title', 'editor', 'thumbnail'),
+        'show_in_rest' => true,
         'can_export' => true,
     );
 

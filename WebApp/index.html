@@ -21,6 +21,8 @@
             <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
             <button class="nav-tab" data-tab="news">News</button>
             <button class="nav-tab" data-tab="tourism">Tourism</button>
+            <button class="nav-tab" data-tab="beneficiaries">Beneficiaries</button>
+            <button class="nav-tab" data-tab="media">Media Gallery</button>
             <button class="nav-tab" data-tab="bac">BAC Documents</button>
             <button class="nav-tab" data-tab="posts">Posts & Articles</button>
         </nav>
@@ -50,6 +52,16 @@
                         <h3>✈️ Tourism Destinations</h3>
                         <p class="stat-number" id="tourism-count">0</p>
                         <a href="#" class="stat-link" onclick="switchTab('tourism'); return false;">View All →</a>
+                    </div>
+                    <div class="stat-card">
+                        <h3>👥 Beneficiaries</h3>
+                        <p class="stat-number" id="beneficiaries-count">0</p>
+                        <a href="#" class="stat-link" onclick="switchTab('beneficiaries'); return false;">View All →</a>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🖼️ Media Gallery</h3>
+                        <p class="stat-number" id="media-count">0</p>
+                        <a href="#" class="stat-link" onclick="switchTab('media'); return false;">View All →</a>
                     </div>
                 </div>
 
@@ -193,6 +205,129 @@
                 </div>
 
                 <div id="tourism-list" class="items-list">Loading...</div>
+            </section>
+
+            <!-- Beneficiaries Tab -->
+            <section id="beneficiaries" class="tab-content">
+                <div class="section-header">
+                    <h2>👥 Beneficiaries</h2>
+                    <button class="btn btn-primary" onclick="showBeneficiaryForm()">+ Add Beneficiary</button>
+                    <input type="text" id="beneficiaries-search" class="search-input" placeholder="Search beneficiaries...">
+                </div>
+
+                <!-- Beneficiary Creation Form -->
+                <div id="beneficiary-form" class="beneficiary-form" style="display: none;">
+                    <h3>Add New Beneficiary</h3>
+                    <form onsubmit="handleBeneficiarySubmit(event)">
+                        <div class="form-group">
+                            <label>Name *</label>
+                            <input type="text" id="beneficiary-name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Description *</label>
+                            <textarea id="beneficiary-description" rows="6" required></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Barangay *</label>
+                                <input type="text" id="beneficiary-barangay" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Type *</label>
+                                <select id="beneficiary-type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Individual">Individual</option>
+                                    <option value="Family">Family</option>
+                                    <option value="Organization">Organization</option>
+                                    <option value="Community">Community</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Contact Number</label>
+                                <input type="tel" id="beneficiary-contact" placeholder="Enter contact number">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Program/Assistance *</label>
+                                <input type="text" id="beneficiary-program" required placeholder="e.g., Food Aid, Infrastructure">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date Registered *</label>
+                                <input type="date" id="beneficiary-date" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Status *</label>
+                                <select id="beneficiary-status" required>
+                                    <option value="">Select Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                    <option value="Pending">Pending</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Photo</label>
+                            <input type="file" id="beneficiary-image" accept="image/*">
+                            <div id="beneficiary-image-preview" class="image-preview"></div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success">Add Beneficiary</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideBeneficiaryForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="beneficiaries-list" class="items-list">Loading...</div>
+            </section>
+
+            <!-- Media Gallery Tab -->
+            <section id="media" class="tab-content">
+                <div class="section-header">
+                    <h2>🖼️ Media Gallery</h2>
+                    <button class="btn btn-primary" onclick="showMediaForm()">+ Create Gallery</button>
+                    <input type="text" id="media-search" class="search-input" placeholder="Search galleries...">
+                </div>
+
+                <!-- Gallery Creation Form -->
+                <div id="media-form" class="media-form" style="display: none;">
+                    <h3>Create New Gallery</h3>
+                    <form onsubmit="handleMediaSubmit(event)">
+                        <div class="form-group">
+                            <label>Gallery Name *</label>
+                            <input type="text" id="gallery-name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="gallery-description" rows="4" placeholder="Gallery description (optional)"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Gallery Images *</label>
+                            <input type="file" id="gallery-images" accept="image/*" multiple required>
+                            <div id="gallery-images-preview" class="image-preview"></div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success">Create Gallery</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideMediaForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="media-list" class="items-list">Loading...</div>
             </section>     </div>
         </div>
     </div>

@@ -29,6 +29,10 @@ function switchTab(tabName) {
         loadPosts();
     } else if (tabName === 'tourism') {
         loadTourism();
+    } else if (tabName === 'beneficiaries') {
+        loadBeneficiaries();
+    } else if (tabName === 'media') {
+        loadMedia();
     } else if (tabName === 'dashboard') {
         loadDashboard();
     }
@@ -47,6 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('news-search')?.addEventListener('input', debounce(searchNews, 300));
     document.getElementById('bac-search')?.addEventListener('input', debounce(searchBAC, 300));
     document.getElementById('tourism-search')?.addEventListener('input', debounce(searchTourism, 300));
+    document.getElementById('beneficiaries-search')?.addEventListener('input', debounce(searchBeneficiaries, 300));
+    document.getElementById('media-search')?.addEventListener('input', debounce(searchMedia, 300));
 
     // Load initial dashboard
     loadDashboard();
@@ -68,17 +74,21 @@ function debounce(func, wait) {
 // Load Dashboard
 async function loadDashboard() {
     try {
-        const [newsCount, bacCount, postsCount, tourismCount] = await Promise.all([
+        const [newsCount, bacCount, postsCount, tourismCount, beneficiariesCount, mediaCount] = await Promise.all([
             getCount('news_item'),
             getCount('bac_item'),
             getCount('post'),
-            getCount('tourism_item')
+            getCount('tourism_item'),
+            getCount('beneficiary_item'),
+            getCount('media_gallery')
         ]);
 
         document.getElementById('news-count').textContent = newsCount;
         document.getElementById('bac-count').textContent = bacCount;
         document.getElementById('posts-count').textContent = postsCount;
         document.getElementById('tourism-count').textContent = tourismCount;
+        document.getElementById('beneficiaries-count').textContent = beneficiariesCount;
+        document.getElementById('media-count').textContent = mediaCount;
 
         // Load recent news
         const recentNews = await fetch(`${API_BASE}news_item?per_page=3`).then(r => r.json());
@@ -695,5 +705,445 @@ async function handleTourismSubmit(event) {
     } catch (error) {
         console.error('Error creating tourism destination:', error);
         alert('❌ Error creating destination: ' + error.message);
+    }
+}
+
+// ============================================
+// BENEFICIARIES FUNCTIONS
+// ============================================
+
+// Load Beneficiaries
+async function loadBeneficiaries() {
+    try {
+        const response = await fetch(`${API_BASE}beneficiary_item?per_page=20`);
+        const beneficiaries = await response.json();
+        displayBeneficiaries(beneficiaries);
+    } catch (error) {
+        console.error('Error loading beneficiaries:', error);
+        document.getElementById('beneficiaries-list').innerHTML = '<div class="empty-state"><p>Error loading beneficiaries</p></div>';
+    }
+}
+
+// Display Beneficiaries
+async function displayBeneficiaries(beneficiaries) {
+    const container = document.getElementById('beneficiaries-list');
+    
+    if (!beneficiaries || beneficiaries.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>👥 No beneficiaries found. Add one!</p></div>';
+        return;
+    }
+
+    const beneficiariesWithImages = await Promise.all(beneficiaries.map(async (item) => {
+        let imageUrl = '';
+        if (item.featured_media) {
+            imageUrl = await getImageUrl(item.featured_media);
+        }
+        return { ...item, imageUrl };
+    }));
+
+    container.innerHTML = beneficiariesWithImages.map(item => {
+        const title = item.title?.rendered || 'Untitled';
+        const excerpt = item.content?.rendered ? item.content.rendered.replace(/<[^>]*>/g, '').substring(0, 100) : 'No description';
+        const type = item.beneficiary_type || 'Individual';
+        const barangay = item.beneficiary_barangay || 'Unknown';
+        const status = item.beneficiary_status || 'Pending';
+        const program = item.beneficiary_program || 'General';
+        
+        const statusColor = status === 'Active' ? '#4CAF50' : status === 'Inactive' ? '#f44336' : '#FF9800';
+        
+        return `
+            <div class="item-card" onclick="showBeneficiaryDetail(${item.id})">
+                <div class="item-header">
+                    <h3 class="item-title">${title}</h3>
+                </div>
+                <div class="item-meta">
+                    <span class="item-badge" style="background-color: #2196F3;">${type}</span>
+                    <span>📍 ${barangay}</span>
+                    <span style="background-color: ${statusColor}; padding: 2px 8px; border-radius: 20px; color: white; font-size: 12px;">${status}</span>
+                </div>
+                ${item.imageUrl ? `<img src="${item.imageUrl}" class="item-image" style="max-height: 200px;">` : ''}
+                <div class="item-excerpt">${excerpt}...</div>
+                <div class="item-meta">
+                    <span>📌 Program: ${program}</span>
+                </div>
+                <div class="item-actions">
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); showBeneficiaryDetail(${item.id})">View Details</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Search Beneficiaries
+async function searchBeneficiaries() {
+    const searchTerm = document.getElementById('beneficiaries-search').value;
+    if (!searchTerm) {
+        loadBeneficiaries();
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}beneficiary_item?search=${encodeURIComponent(searchTerm)}`);
+        const beneficiaries = await response.json();
+        displayBeneficiaries(beneficiaries);
+    } catch (error) {
+        console.error('Error searching beneficiaries:', error);
+    }
+}
+
+// Show Beneficiary Detail
+async function showBeneficiaryDetail(beneficiaryId) {
+    try {
+        const response = await fetch(`${API_BASE}beneficiary_item/${beneficiaryId}`);
+        const item = await response.json();
+        
+        let imageHtml = '';
+        if (item.featured_media) {
+            const imageUrl = await getImageUrl(item.featured_media);
+            imageHtml = `<img src="${imageUrl}" class="item-image">`;
+        }
+        
+        const type = item.beneficiary_type ? `<span class="item-badge">${item.beneficiary_type}</span>` : '';
+        const barangay = item.beneficiary_barangay ? `<p><strong>📍 Barangay:</strong> ${item.beneficiary_barangay}</p>` : '';
+        const contact = item.beneficiary_contact ? `<p><strong>📞 Contact:</strong> ${item.beneficiary_contact}</p>` : '';
+        const program = item.beneficiary_program ? `<p><strong>📌 Program:</strong> ${item.beneficiary_program}</p>` : '';
+        const date = item.beneficiary_date ? `<p><strong>📅 Date Registered:</strong> ${new Date(item.beneficiary_date).toLocaleDateString()}</p>` : '';
+        const status = item.beneficiary_status ? `<p><strong>Status:</strong> <span style="padding: 4px 8px; border-radius: 4px; background-color: ${item.beneficiary_status === 'Active' ? '#4CAF50' : item.beneficiary_status === 'Inactive' ? '#f44336' : '#FF9800'}; color: white;">${item.beneficiary_status}</span></p>` : '';
+        
+        const content = `
+            <h2>${item.title.rendered}</h2>
+            <div class="item-meta">
+                ${type}
+                ${status}
+            </div>
+            ${imageHtml}
+            <div>${item.content?.rendered || 'No description available'}</div>
+            ${barangay}
+            ${contact}
+            ${program}
+            ${date}
+        `;
+        
+        document.getElementById('modal-body').innerHTML = content;
+        document.getElementById('detail-modal').style.display = 'flex';
+    } catch (error) {
+        console.error('Error loading beneficiary detail:', error);
+    }
+}
+
+// Show Beneficiary Form
+function showBeneficiaryForm() {
+    document.getElementById('beneficiary-form').style.display = 'block';
+}
+
+// Hide Beneficiary Form
+function hideBeneficiaryForm() {
+    document.getElementById('beneficiary-form').style.display = 'none';
+    document.getElementById('beneficiary-name').value = '';
+    document.getElementById('beneficiary-description').value = '';
+    document.getElementById('beneficiary-barangay').value = '';
+    document.getElementById('beneficiary-type').value = 'Individual';
+    document.getElementById('beneficiary-contact').value = '';
+    document.getElementById('beneficiary-program').value = '';
+    document.getElementById('beneficiary-date').value = '';
+    document.getElementById('beneficiary-status').value = 'Pending';
+    document.getElementById('beneficiary-image').value = '';
+    document.getElementById('beneficiary-image-preview').innerHTML = '';
+}
+
+// Handle Beneficiary Image Preview
+document.getElementById('beneficiary-image')?.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const preview = document.getElementById('beneficiary-image-preview');
+            preview.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Handle Beneficiary Submit
+async function handleBeneficiarySubmit(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('beneficiary-name').value;
+    const description = document.getElementById('beneficiary-description').value;
+    const barangay = document.getElementById('beneficiary-barangay').value;
+    const type = document.getElementById('beneficiary-type').value;
+    const contact = document.getElementById('beneficiary-contact').value;
+    const program = document.getElementById('beneficiary-program').value;
+    const date = document.getElementById('beneficiary-date').value;
+    const status = document.getElementById('beneficiary-status').value;
+    const imageFile = document.getElementById('beneficiary-image').files[0];
+
+    if (!name || !description || !barangay || !program || !date) {
+        alert('Please fill in all required fields');
+        return;
+    }
+
+    try {
+        // Create beneficiary post
+        const beneficiaryData = {
+            title: name,
+            content: description,
+            status: 'publish',
+            meta: {
+                beneficiary_type: type,
+                beneficiary_barangay: barangay,
+                beneficiary_contact: contact,
+                beneficiary_program: program,
+                beneficiary_date: date,
+                beneficiary_status: status
+            }
+        };
+
+        const beneficiaryResponse = await fetch(`${API_BASE}beneficiary_item`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(beneficiaryData)
+        });
+
+        if (!beneficiaryResponse.ok) {
+            throw new Error('Failed to create beneficiary');
+        }
+
+        const beneficiary = await beneficiaryResponse.json();
+
+        // Upload image if provided
+        if (imageFile) {
+            const formData = new FormData();
+            formData.append('file', imageFile);
+
+            const mediaResponse = await fetch(`${API_BASE}media`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (mediaResponse.ok) {
+                const media = await mediaResponse.json();
+                
+                // Set featured image
+                await fetch(`${API_BASE}beneficiary_item/${beneficiary.id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        featured_media: media.id
+                    })
+                });
+            }
+        }
+
+        alert('✅ Beneficiary added successfully!');
+        hideBeneficiaryForm();
+        loadBeneficiaries();
+    } catch (error) {
+        console.error('Error creating beneficiary:', error);
+        alert('❌ Error creating beneficiary: ' + error.message);
+    }
+}
+
+// ============================================
+// MEDIA GALLERY FUNCTIONS
+// ============================================
+
+// Load Media Galleries
+async function loadMedia() {
+    try {
+        const response = await fetch(`${API_BASE}media_gallery?per_page=20`);
+        const galleries = await response.json();
+        displayMedia(galleries);
+    } catch (error) {
+        console.error('Error loading media galleries:', error);
+        document.getElementById('media-list').innerHTML = '<div class="empty-state"><p>Error loading galleries</p></div>';
+    }
+}
+
+// Display Media Galleries
+function displayMedia(galleries) {
+    const container = document.getElementById('media-list');
+    
+    if (!galleries || galleries.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>🖼️ No media galleries found. Create one!</p></div>';
+        return;
+    }
+
+    container.innerHTML = galleries.map(item => {
+        const title = item.title?.rendered || 'Untitled Gallery';
+        const excerpt = item.content?.rendered ? item.content.rendered.replace(/<[^>]*>/g, '').substring(0, 100) : 'No description';
+        const imageCount = item.media_gallery_images?.length || 0;
+        const firstImage = item.media_gallery_images && item.media_gallery_images.length > 0 ? item.media_gallery_images[0] : '';
+        
+        return `
+            <div class="item-card" onclick="showMediaDetail(${item.id})">
+                <div class="item-header">
+                    <h3 class="item-title">${title}</h3>
+                </div>
+                <div class="item-meta">
+                    <span>📸 ${imageCount} images</span>
+                </div>
+                ${firstImage ? `<img src="${firstImage}" class="item-image" style="max-height: 200px;">` : '<div style="height: 150px; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">📷 No images</div>'}
+                <div class="item-excerpt">${excerpt}...</div>
+                <div class="item-actions">
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); showMediaDetail(${item.id})">View Gallery</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Search Media
+async function searchMedia() {
+    const searchTerm = document.getElementById('media-search').value;
+    if (!searchTerm) {
+        loadMedia();
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}media_gallery?search=${encodeURIComponent(searchTerm)}`);
+        const galleries = await response.json();
+        displayMedia(galleries);
+    } catch (error) {
+        console.error('Error searching media:', error);
+    }
+}
+
+// Show Media Detail
+async function showMediaDetail(galleryId) {
+    try {
+        const response = await fetch(`${API_BASE}media_gallery/${galleryId}`);
+        const item = await response.json();
+        
+        let imagesHtml = '';
+        if (item.media_gallery_images && item.media_gallery_images.length > 0) {
+            imagesHtml = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 20px;">';
+            item.media_gallery_images.forEach(imageUrl => {
+                imagesHtml += `<img src="${imageUrl}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">`;
+            });
+            imagesHtml += '</div>';
+        }
+        
+        const content = `
+            <h2>${item.title.rendered}</h2>
+            <div class="item-meta">
+                <span>📸 ${item.media_gallery_images?.length || 0} images</span>
+            </div>
+            <div>${item.content?.rendered || 'No description available'}</div>
+            ${imagesHtml}
+        `;
+        
+        document.getElementById('modal-body').innerHTML = content;
+        document.getElementById('detail-modal').style.display = 'flex';
+    } catch (error) {
+        console.error('Error loading media detail:', error);
+    }
+}
+
+// Show Media Form
+function showMediaForm() {
+    document.getElementById('media-form').style.display = 'block';
+}
+
+// Hide Media Form
+function hideMediaForm() {
+    document.getElementById('media-form').style.display = 'none';
+    document.getElementById('gallery-name').value = '';
+    document.getElementById('gallery-description').value = '';
+    document.getElementById('gallery-images').value = '';
+    document.getElementById('gallery-images-preview').innerHTML = '';
+}
+
+// Handle Media Gallery Image Preview
+document.getElementById('gallery-images')?.addEventListener('change', function(e) {
+    const files = e.target.files;
+    const preview = document.getElementById('gallery-images-preview');
+    preview.innerHTML = '';
+    
+    if (files && files.length > 0) {
+        preview.innerHTML = `<p>${files.length} image(s) selected</p>`;
+        for (let i = 0; i < files.length && i < 5; i++) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = document.createElement('img');
+                img.src = event.target.result;
+                img.style.maxHeight = '80px';
+                img.style.marginRight = '10px';
+                preview.appendChild(img);
+            };
+            reader.readAsDataURL(files[i]);
+        }
+    }
+});
+
+// Handle Media Submit
+async function handleMediaSubmit(event) {
+    event.preventDefault();
+
+    const galleryName = document.getElementById('gallery-name').value;
+    const galleryDescription = document.getElementById('gallery-description').value;
+    const imageFiles = document.getElementById('gallery-images').files;
+
+    if (!galleryName) {
+        alert('Please enter a gallery name');
+        return;
+    }
+
+    if (imageFiles.length === 0) {
+        alert('Please select at least one image');
+        return;
+    }
+
+    try {
+        // Upload all images
+        const imageArray = [];
+        for (let i = 0; i < imageFiles.length; i++) {
+            const formData = new FormData();
+            formData.append('file', imageFiles[i]);
+
+            const mediaResponse = await fetch(`${API_BASE}media`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (mediaResponse.ok) {
+                const media = await mediaResponse.json();
+                imageArray.push(media.source_url);
+            }
+        }
+
+        // Create gallery post with uploaded images
+        const galleryData = {
+            title: galleryName,
+            content: galleryDescription || 'Gallery',
+            status: 'publish',
+            meta: {
+                media_gallery_images: imageArray
+            }
+        };
+
+        const galleryResponse = await fetch(`${API_BASE}media_gallery`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(galleryData)
+        });
+
+        if (!galleryResponse.ok) {
+            throw new Error('Failed to create gallery');
+        }
+
+        alert('✅ Gallery created successfully with ' + imageArray.length + ' images!');
+        hideMediaForm();
+        loadMedia();
+    } catch (error) {
+        console.error('Error creating gallery:', error);
+        alert('❌ Error creating gallery: ' + error.message);
     }
 }

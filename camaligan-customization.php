@@ -147,4 +147,19 @@
 				<h4>Created by Patrick James O. De Leon</h4>
 			<?php
 		}
+
+		// Display functions for frontend
+		function display_beneficiaries_frontend() {
+			wp_enqueue_style('beneficiaries-shortcode-style', plugins_url('/camaligan-customization/widget/wg_beneficiaries_manager/css/beneficiaries-shortcode-style.css'));
+			echo do_shortcode('[beneficiaries_list]');
+		}
+
+		function display_media_gallery_frontend() {
+			wp_enqueue_style('media-gallery-shortcode-style', plugins_url('/camaligan-customization/widget/wg_media_gallery/css/media-gallery-shortcode-style.css'));
+			echo do_shortcode('[gallery_list]');
+		}
+
+		// Register front-end display shortcodes
+		add_shortcode('display_beneficiaries', 'display_beneficiaries_frontend');
+		add_shortcode('display_media_galleries', 'display_media_gallery_frontend');
 ?>

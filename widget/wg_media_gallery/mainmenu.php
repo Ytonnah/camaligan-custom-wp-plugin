@@ -122,3 +122,4 @@ class Media_Gallery_Admin {
 
 // Initialize dashboard
 $gallery_admin = new Media_Gallery_Admin();
+$gallery_admin->display_dashboard();
