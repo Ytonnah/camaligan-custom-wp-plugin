@@ -25,6 +25,7 @@
 	include("widget/bac_manager/init.php");
 	include("widget/wg_tourism_manager/init.php");
 	include("widget/annual_report_manager/init.php");
+	include("widget/budget_overview_manager/init.php");
 	
 	
 	//Registering All Custom Widgets
@@ -85,6 +86,7 @@
 			add_submenu_page("camaligan-custom-function", "Tourism Manager", "Tourism Manager", "manage_options", "tourismuploader", "tourismuploader");
 			add_submenu_page("camaligan-custom-function", "BAC Manager", "BAC Manager", "manage_options", "bacuploader", "bacuploader");
 			add_submenu_page("camaligan-custom-function", "Annual Report Manager", "Annual Report Manager", "manage_options", "annualreportmanager", "annualreportmanager");
+			add_submenu_page("camaligan-custom-function", "Budget Overview Manager", "Budget Overview Manager", "manage_options", "budgetoverviewmanager", "budgetoverviewmanager");
 		}
 
 		add_action("admin_menu", "customFunctions_menu");
@@ -114,6 +116,11 @@
 		function annualreportmanager()
 		{
 			render_annual_report_manager_page();
+		}
+
+		function budgetoverviewmanager()
+		{
+			render_budget_overview_manager_page();
 		}
 		
 		function ccffunction()
