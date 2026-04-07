@@ -46,6 +46,7 @@ class News_Viewer {
                         <option value="event">Event</option>
                         <option value="update">Update</option>
                         <option value="alert">Alert</option>
+                        <option value="news">News</option>
                     </select>
                 </div>
             </div>

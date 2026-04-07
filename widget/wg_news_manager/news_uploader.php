@@ -54,6 +54,7 @@ class News_Uploader {
                         <option value="event">Event</option>
                         <option value="update">Update</option>
                         <option value="alert">Alert</option>
+                        <option value="news">News</option>
                     </select>
                 </div>
 
@@ -141,6 +142,16 @@ class News_Uploader {
             if (!empty($_POST['news_image_id'])) {
                 set_post_thumbnail($post_id, absint($_POST['news_image_id']));
             }
+            
+            // Assign to 'News' WordPress category if selected
+            $category = sanitize_text_field($_POST['news_category'] ?? '');
+            if ($category === 'news') {
+                $news_category = get_category_by_slug('news');
+                if ($news_category) {
+                    wp_set_post_terms($post_id, array($news_category->term_id), 'category');
+                }
+            }
+            
             wp_send_json_success(array(
                 'message' => 'News uploaded successfully',
                 'post_id' => $post_id
@@ -182,12 +193,21 @@ class News_Uploader {
         $updated = wp_update_post($data);
 
         if ($updated) {
-            update_post_meta($post_id, 'news_category', sanitize_text_field($_POST['news_category'] ?? ''));
+            $category = sanitize_text_field($_POST['news_category'] ?? '');
+            update_post_meta($post_id, 'news_category', $category);
             update_post_meta($post_id, 'news_priority', sanitize_text_field($_POST['news_priority'] ?? 'normal'));
             update_post_meta($post_id, 'news_featured', isset($_POST['news_featured']) ? 1 : 0);
             
             if (!empty($_POST['news_image_id'])) {
                 set_post_thumbnail($post_id, absint($_POST['news_image_id']));
+            }
+            
+            // Assign to 'News' WordPress category if selected
+            if ($category === 'news') {
+                $news_category = get_category_by_slug('news');
+                if ($news_category) {
+                    wp_set_post_terms($post_id, array($news_category->term_id), 'category');
+                }
             }
 
             wp_send_json_success(array(

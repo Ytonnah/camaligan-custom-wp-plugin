@@ -12,7 +12,7 @@
         <header class="dashboard-header">
             <div class="header-content">
                 <h1>🏛️ Camaligan Management Dashboard</h1>
-                <p>News • BAC Documents • Posts & Articles</p>
+                <p>News • BAC Documents • Tourism • Posts & Articles</p>
             </div>
         </header>
 
@@ -20,6 +20,7 @@
         <nav class="dashboard-nav">
             <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
             <button class="nav-tab" data-tab="news">News</button>
+            <button class="nav-tab" data-tab="tourism">Tourism</button>
             <button class="nav-tab" data-tab="bac">BAC Documents</button>
             <button class="nav-tab" data-tab="posts">Posts & Articles</button>
         </nav>
@@ -44,6 +45,11 @@
                         <h3>📝 Posts</h3>
                         <p class="stat-number" id="posts-count">0</p>
                         <a href="#" class="stat-link" onclick="switchTab('posts'); return false;">View All →</a>
+                    </div>
+                    <div class="stat-card">
+                        <h3>✈️ Tourism Destinations</h3>
+                        <p class="stat-number" id="tourism-count">0</p>
+                        <a href="#" class="stat-link" onclick="switchTab('tourism'); return false;">View All →</a>
                     </div>
                 </div>
 
@@ -117,21 +123,77 @@
                             <button type="submit" class="btn btn-success">Publish Post</button>
                             <button type="button" class="btn btn-secondary" onclick="hidePostForm()">Cancel</button>
                         </div>
+
+                    </form>
+
+            <!-- Tourism Tab -->
+            <section id="tourism" class="tab-content">
+                <div class="section-header">
+                    <h2>✈️ Tourism Destinations</h2>
+                    <button class="btn btn-primary" onclick="showTourismForm()">+ Add Destination</button>
+                    <input type="text" id="tourism-search" class="search-input" placeholder="Search tourism...">
+                </div>
+
+                <!-- Tourism Creation Form -->
+                <div id="tourism-form" class="tourism-form" style="display: none;">
+                    <h3>Add New Tourism Destination</h3>
+                    <form onsubmit="handleTourismSubmit(event)">
+                        <div class="form-group">
+                            <label>Title *</label>
+                            <input type="text" id="tourism-title" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Description *</label>
+                            <textarea id="tourism-description" rows="6" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select id="tourism-type">
+                                <option value="">Select Type</option>
+                                <option value="beach">Beach</option>
+                                <option value="mountain">Mountain</option>
+                                <option value="cultural">Cultural</option>
+                                <option value="historic">Historic</option>
+                                <option value="natural">Natural</option>
+                                <option value="adventure">Adventure</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="tourism-location" placeholder="Enter location address">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Rating (1-5)</label>
+                            <input type="number" id="tourism-rating" min="1" max="5" placeholder="5">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Featured Image</label>
+                            <input type="file" id="tourism-image" accept="image/*">
+                            <div id="tourism-image-preview" class="image-preview"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="tourism-featured">
+                                Mark as Featured
+                            </label>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success">Add Destination</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideTourismForm()">Cancel</button>
+                        </div>
                     </form>
                 </div>
 
-                <!-- Posts List -->
-                <div id="posts-list" class="items-list">Loading...</div>
-            </section>
-
-        </main>
-
-        <!-- Modal for Details -->
-        <div id="detail-modal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <span class="modal-close" onclick="closeModal()">&times;</span>
-                <div id="modal-body"></div>
-            </div>
+                <div id="tourism-list" class="items-list">Loading...</div>
+            </section>     </div>
         </div>
     </div>
 

@@ -23,6 +23,7 @@
 	include("widget/office_banner/office_banner.php");
 	include("widget/wg_news_manager/init.php");
 	include("widget/bac_manager/init.php");
+	include("widget/wg_tourism_manager/init.php");
 	
 	
 	//Registering All Custom Widgets
@@ -79,10 +80,12 @@
 			add_menu_page("Camaligan's Custom Functions", "Camaligan's Custom Functions","manage_options", "camaligan-custom-function", "ccffunction", plugins_url('/camaligan-customization/icon.png'));
 			add_submenu_page("camaligan-custom-function", "Ordinance Manager", "Ordinance Manager", "manage_options", "ordinanceuploader", "ordinanceuploader");		  
 		
-			add_submenu_page("camaligan-custom-function", "News Manager", "News Manager", "manage_options", "newsuploader", "newsuploader");}
+			add_submenu_page("camaligan-custom-function", "News Manager", "News Manager", "manage_options", "newsuploader", "newsuploader");
+			add_submenu_page("camaligan-custom-function", "Tourism Manager", "Tourism Manager", "manage_options", "tourismuploader", "tourismuploader");
+			add_submenu_page("camaligan-custom-function", "BAC Manager", "BAC Manager", "manage_options", "bacuploader", "bacuploader");
+		}
 
 		add_action("admin_menu", "customFunctions_menu");
-
 		function ordinanceuploader()
 		{
 			include("widget/ordinanceuploader/mainmenu.php");
@@ -90,7 +93,20 @@
 
 		function newsuploader()
 		{
-			include("widget/wg_news_manager/init.php");
+			require_once("widget/wg_news_manager/init.php");
+			include("widget/wg_news_manager/mainmenu.php");
+		}
+
+		function tourismuploader()
+		{
+			require_once("widget/wg_tourism_manager/init.php");
+			include("widget/wg_tourism_manager/mainmenu.php");
+		}
+
+		function bacuploader()
+		{
+			require_once("widget/bac_manager/init.php");
+			include("widget/bac_manager/mainmenu.php");
 		}
 		
 		function ccffunction()

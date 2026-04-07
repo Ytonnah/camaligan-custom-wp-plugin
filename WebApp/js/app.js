@@ -27,6 +27,8 @@ function switchTab(tabName) {
         loadBAC();
     } else if (tabName === 'posts') {
         loadPosts();
+    } else if (tabName === 'tourism') {
+        loadTourism();
     } else if (tabName === 'dashboard') {
         loadDashboard();
     }
@@ -44,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Search functionality
     document.getElementById('news-search')?.addEventListener('input', debounce(searchNews, 300));
     document.getElementById('bac-search')?.addEventListener('input', debounce(searchBAC, 300));
+    document.getElementById('tourism-search')?.addEventListener('input', debounce(searchTourism, 300));
 
     // Load initial dashboard
     loadDashboard();
@@ -65,15 +68,17 @@ function debounce(func, wait) {
 // Load Dashboard
 async function loadDashboard() {
     try {
-        const [newsCount, bacCount, postsCount] = await Promise.all([
+        const [newsCount, bacCount, postsCount, tourismCount] = await Promise.all([
             getCount('news_item'),
             getCount('bac_item'),
-            getCount('post')
+            getCount('post'),
+            getCount('tourism_item')
         ]);
 
         document.getElementById('news-count').textContent = newsCount;
         document.getElementById('bac-count').textContent = bacCount;
         document.getElementById('posts-count').textContent = postsCount;
+        document.getElementById('tourism-count').textContent = tourismCount;
 
         // Load recent news
         const recentNews = await fetch(`${API_BASE}news_item?per_page=3`).then(r => r.json());
@@ -474,3 +479,221 @@ document.getElementById('detail-modal')?.addEventListener('click', function(e) {
         closeModal();
     }
 });
+
+// Load Tourism
+async function loadTourism() {
+    try {
+        const response = await fetch(`${API_BASE}tourism_item?per_page=20`);
+        const tourism = await response.json();
+        displayTourism(tourism);
+    } catch (error) {
+        console.error('Error loading tourism:', error);
+        document.getElementById('tourism-list').innerHTML = '<div class="empty-state"><p>Error loading tourism destinations</p></div>';
+    }
+}
+
+// Display Tourism
+async function displayTourism(tourism) {
+    const container = document.getElementById('tourism-list');
+    
+    if (!tourism || tourism.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>✈️ No tourism destinations found</p></div>';
+        return;
+    }
+
+    const tourismWithImages = await Promise.all(tourism.map(async (item) => {
+        let imageUrl = '';
+        if (item.featured_media) {
+            imageUrl = await getImageUrl(item.featured_media);
+        }
+        return { ...item, imageUrl };
+    }));
+
+    container.innerHTML = tourismWithImages.map(item => {
+        const title = item.title?.rendered || 'Untitled';
+        const excerpt = item.content?.rendered ? item.content.rendered.replace(/<[^>]*>/g, '').substring(0, 150) : 'No description';
+        const type = item.tourism_type || 'Destination';
+        const location = item.tourism_location || 'Location';
+        const rating = item.tourism_rating || '—';
+        
+        return `
+            <div class="item-card" onclick="showTourismDetail(${item.id})">
+                <div class="item-header">
+                    <h3 class="item-title">${title}</h3>
+                </div>
+                <div class="item-meta">
+                    <span class="item-badge">${type}</span>
+                    <span>📍 ${location}</span>
+                    <span>⭐ ${rating}/5</span>
+                </div>
+                ${item.imageUrl ? `<img src="${item.imageUrl}" class="item-image" style="max-height: 200px;">` : ''}
+                <div class="item-excerpt">${excerpt}...</div>
+                <div class="item-actions">
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); showTourismDetail(${item.id})">View Details</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Search Tourism
+async function searchTourism() {
+    const searchTerm = document.getElementById('tourism-search').value;
+    if (!searchTerm) {
+        loadTourism();
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}tourism_item?search=${encodeURIComponent(searchTerm)}`);
+        const tourism = await response.json();
+        displayTourism(tourism);
+    } catch (error) {
+        console.error('Error searching tourism:', error);
+    }
+}
+
+// Show Tourism Detail
+async function showTourismDetail(tourismId) {
+    try {
+        const response = await fetch(`${API_BASE}tourism_item/${tourismId}`);
+        const item = await response.json();
+        
+        let imageHtml = '';
+        if (item.featured_media) {
+            const imageUrl = await getImageUrl(item.featured_media);
+            imageHtml = `<img src="${imageUrl}" class="item-image">`;
+        }
+        
+        const type = item.tourism_type ? `<span class="item-badge">${item.tourism_type}</span>` : '';
+        const location = item.tourism_location ? `<p><strong>📍 Location:</strong> ${item.tourism_location}</p>` : '';
+        const rating = item.tourism_rating ? `<p><strong>⭐ Rating:</strong> ${item.tourism_rating}/5</p>` : '';
+        
+        const content = `
+            <h2>${item.title.rendered}</h2>
+            <div class="item-meta">
+                ${type}
+                ${location}
+                ${rating}
+            </div>
+            ${imageHtml}
+            <div>${item.content.rendered}</div>
+        `;
+        
+        document.getElementById('modal-body').innerHTML = content;
+        document.getElementById('detail-modal').style.display = 'flex';
+    } catch (error) {
+        console.error('Error loading tourism detail:', error);
+    }
+}
+
+// Show Tourism Form
+function showTourismForm() {
+    document.getElementById('tourism-form').style.display = 'block';
+}
+
+// Hide Tourism Form
+function hideTourismForm() {
+    document.getElementById('tourism-form').style.display = 'none';
+    document.getElementById('tourism-title').value = '';
+    document.getElementById('tourism-description').value = '';
+    document.getElementById('tourism-type').value = '';
+    document.getElementById('tourism-location').value = '';
+    document.getElementById('tourism-rating').value = '';
+    document.getElementById('tourism-image').value = '';
+    document.getElementById('tourism-image-preview').innerHTML = '';
+    document.getElementById('tourism-featured').checked = false;
+}
+
+// Handle Tourism Image Preview
+document.getElementById('tourism-image')?.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const preview = document.getElementById('tourism-image-preview');
+            preview.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Handle Tourism Submit
+async function handleTourismSubmit(event) {
+    event.preventDefault();
+
+    const title = document.getElementById('tourism-title').value;
+    const description = document.getElementById('tourism-description').value;
+    const type = document.getElementById('tourism-type').value;
+    const location = document.getElementById('tourism-location').value;
+    const rating = document.getElementById('tourism-rating').value;
+    const imageFile = document.getElementById('tourism-image').files[0];
+    const featured = document.getElementById('tourism-featured').checked;
+
+    if (!title || !description) {
+        alert('Please fill in title and description');
+        return;
+    }
+
+    try {
+        // Create tourism post
+        const tourismData = {
+            title: title,
+            content: description,
+            status: 'publish',
+            meta: {
+                tourism_type: type,
+                tourism_location: location,
+                tourism_rating: rating ? parseInt(rating) : 0,
+                tourism_featured: featured ? 1 : 0
+            }
+        };
+
+        const tourismResponse = await fetch(`${API_BASE}tourism_item`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(tourismData)
+        });
+
+        if (!tourismResponse.ok) {
+            throw new Error('Failed to create tourism destination');
+        }
+
+        const tourism = await tourismResponse.json();
+
+        // Upload image if provided
+        if (imageFile) {
+            const formData = new FormData();
+            formData.append('file', imageFile);
+
+            const mediaResponse = await fetch(`${API_BASE}media`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (mediaResponse.ok) {
+                const media = await mediaResponse.json();
+                
+                // Set featured image
+                await fetch(`${API_BASE}tourism_item/${tourism.id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        featured_media: media.id
+                    })
+                });
+            }
+        }
+
+        alert('✅ Tourism destination added successfully!');
+        hideTourismForm();
+        loadTourism();
+    } catch (error) {
+        console.error('Error creating tourism destination:', error);
+        alert('❌ Error creating destination: ' + error.message);
+    }
+}
