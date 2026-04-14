@@ -1,60 +1,40 @@
 jQuery(document).ready(function($) {
-    $('#barangay-search, #barangay-filter').on('input change', function() {
-        loadBarangays();
+    $('#barangay-search').on('input', function() {
+        loadBarangays($(this).val());
     });
 
-    $('.btn-edit').on('click', function() {
-        // Populate edit form in modal or switch tab
-        var id = $(this).data('id');
-        // AJAX get detail and populate upload form
-        $.post(barangayViewerData.ajaxurl, {
-            action: 'get_barangay_detail',
-            post_id: id,
-            nonce: barangayViewerData.nonce
-        }, function(res) {
-            if (res.success) {
-                // Assume upload tab/form handles populate, or show modal
-                $('[data-tab="barangay-upload"]').show();
-                // Trigger edit logic in upload.js
-            }
-        });
-    });
+    function escapeHtml(value) {
+        return $('<div>').text(value || '').html();
+    }
 
-    $('.btn-delete').on('click', function() {
-        if (confirm('Delete barangay profile?')) {
-            $.post(barangayViewerData.ajaxurl, {
-                action: 'delete_barangay',
-                post_id: $(this).data('id'),
-                nonce: barangayViewerData.nonce
-            }).done(function() {
-                location.reload();
-            });
-        }
-    });
-
-    function loadBarangays(search = '', filter = '') {
+    function loadBarangays(search) {
         $.post(barangayViewerData.ajaxurl, {
             action: 'search_barangay',
-            search_term: search,
-            featured: filter,
+            search_term: search || '',
             nonce: barangayViewerData.nonce
         }, function(res) {
             var html = '';
             if (res.success && res.data.length) {
                 res.data.forEach(function(item) {
-                    html += `<div class="barangay-card">
-                        <img src="${item.image || ''}" alt="${item.title}">
-                        <h3>${item.title}</h3>
-                        <p>${item.excerpt}</p>
-                        <button class="btn-edit" data-id="${item.ID}">Edit</button>
-                        <button class="btn-delete" data-id="${item.ID}">Delete</button>
-                    </div>`;
+                    html += '<article class="barangay-card">';
+                    if (item.image_url) {
+                        html += '<div class="barangay-image"><img src="' + escapeHtml(item.image_url) + '" alt="' + escapeHtml(item.name) + '"></div>';
+                    }
+                    html += '<div class="barangay-info">';
+                    html += '<h3>' + escapeHtml(item.name) + '</h3>';
+                    html += '<p>' + escapeHtml(item.barangay_profile || '').substring(0, 180) + '</p>';
+                    if (item.origin_of_name) {
+                        html += '<p><strong>Origin of Name:</strong> ' + escapeHtml(item.origin_of_name).substring(0, 180) + '</p>';
+                    }
+                    if (item.demographic_profile) {
+                        html += '<p><strong>Demographic Profile:</strong> ' + escapeHtml(item.demographic_profile).substring(0, 180) + '</p>';
+                    }
+                    html += '</div></article>';
                 });
             } else {
-                html = '<p>No profiles found.</p>';
+                html = '<p>No barangay profiles found.</p>';
             }
             $('#barangay-list').html(html);
         });
     }
 });
-

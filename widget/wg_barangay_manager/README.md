@@ -1,31 +1,44 @@
-# WG Barangay Manager
+# Barangay Profile Manager
 
 ## Features
-- Admin dashboard for uploading barangay profiles (demographics, patron saint, topography, images)
-- Frontend shortcodes for displaying profiles
-- AJAX CRUD operations
-- Search/filter featured
+- Admin dashboard for barangay profiles
+- REST API CRUD operations
+- Frontend shortcode display
+
+## Fields
+- Name of Barangay
+- Barangay Profile
+- Image of Barangay
+- Origin of Name
+- Demographic Profile
 
 ## Admin Menu
 Go to `Barangay Manager` in WP Admin.
 
 ## Shortcodes
 ```
+[barangay_profile posts_per_page="12"]
 [barangay_viewer posts_per_page="12"]
-[featured_barangay posts_per_page="4"]
 [barangay_uploader] (admin only)
 ```
 
-## Fields
-- Barangay Name
-- Description
-- Demographics
-- Patron Saint
-- Topography
-- Location
-- Population
-- Featured Image
-- Featured toggle
+## REST API
+```
+GET    /wp-json/wp/v2/barangay-profiles
+POST   /wp-json/wp/v2/barangay-profiles
+GET    /wp-json/wp/v2/barangay-profiles/{id}
+PUT    /wp-json/wp/v2/barangay-profiles/{id}
+DELETE /wp-json/wp/v2/barangay-profiles/{id}
+```
 
-## CPT
-`barangay_profile` - auto registered.
+## Example Body
+```json
+{
+  "name": "Barangay Poblacion",
+  "barangay_profile": "Profile content here.",
+  "image_id": 123,
+  "origin_of_name": "Origin content here.",
+  "demographic_profile": "Demographic content here.",
+  "status": "publish"
+}
+```

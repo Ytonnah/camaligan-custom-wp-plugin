@@ -29,6 +29,7 @@
 	include("widget/wg_beneficiaries_manager/init.php");
 	include("widget/budget_overview_manager/init.php");
 	include("widget/breadcrumb_manager/init.php");
+	include("widget/wg_barangay_manager/init.php");
 
 	include("widget/project_manager/init.php");
 	
