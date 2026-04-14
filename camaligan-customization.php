@@ -30,6 +30,7 @@
 	include("widget/budget_overview_manager/init.php");
 	include("widget/breadcrumb_manager/init.php");
 
+	include("widget/project_manager/init.php");
 	
 	
 	//Registering All Custom Widgets
@@ -97,7 +98,8 @@
 			// add_submenu_page("camaligan-custom-function", "Annual Report Manager", "Annual Report Manager", "manage_options", "annualreportmanager", "annualreportmanager");
 			add_submenu_page("camaligan-custom-function", "Budget Overview Manager", "Budget Overview Manager", "manage_options", "budgetoverviewmanager", "budgetoverviewmanager");
 				add_submenu_page("camaligan-custom-function", "Barangay Manager", "Barangay Manager", "manage_options", "barangaymanager", "barangaymanager");
-				}
+					add_submenu_page("camaligan-custom-function", "Project Manager", "Project Manager", "manage_options", "projectmanager", "projectmanager");
+		}
 
 		add_action("admin_menu", "customFunctions_menu");
 		function ordinanceuploader()
@@ -156,6 +158,11 @@
 		{
 			render_breadcrumb_manager_page();
 		}
+
+		function projectmanager()
+		{
+			render_project_manager_page();
+		}
 		
 		function ccffunction()
 		{
@@ -180,3 +187,4 @@
 		add_shortcode('display_beneficiaries', 'display_beneficiaries_frontend');
 		add_shortcode('display_media_galleries', 'display_media_gallery_frontend');
 ?>
+
