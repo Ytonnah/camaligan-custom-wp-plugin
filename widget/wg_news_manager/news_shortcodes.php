@@ -49,6 +49,12 @@ class News_Shortcodes {
 
         $viewer = News_Manager::get_instance()->get_viewer();
         
+        // JSON mode for API requests
+        if (isset($_GET['format']) && $_GET['format'] === 'json') {
+            $viewer->json_news_list($atts);
+            return '';
+        }
+        
         ob_start();
         $viewer->display_news_viewer($atts);
         return ob_get_clean();

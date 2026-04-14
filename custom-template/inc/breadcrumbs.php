@@ -9,7 +9,8 @@
 <nav id="breadcrumbs" class="anchor" aria-label="You are here:" role="navigation">
 	<div class="row">
 		<div class="large-12 columns">
-    		<?php gwt_wp_breadcrumb(); ?>
+    		<?php echo do_shortcode('[breadcrumb]'); ?>
+
 		</div>
 	</div>
 </nav>
