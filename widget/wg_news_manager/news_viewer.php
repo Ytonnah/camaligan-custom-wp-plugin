@@ -259,10 +259,63 @@ class News_Viewer {
         wp_send_json_success($results);
     }
 
+/**
+     * Get news list as JSON
+     * Called when ?format=json
+     */
+    public function json_news_list($args = array()) {
+        $defaults = array(
+            'posts_per_page' => 10,
+            'featured_only' => false,
+        );
+        $args = wp_parse_args($args, $defaults);
+
+        $query_args = array(
+            'post_type' => 'news_item',
+            'posts_per_page' => $args['posts_per_page'],
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'post_status' => 'publish'
+        );
+
+        if ($args['featured_only']) {
+            $query_args['meta_query'] = array(
+                array(
+                    'key' => 'news_featured',
+                    'value' => 1,
+                    'compare' => '='
+                )
+            );
+        }
+
+        $query = new WP_Query($query_args);
+        $results = array();
+
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+                $post_id = get_the_ID();
+                $results[] = array(
+                    'ID' => $post_id,
+                    'title' => get_the_title($post_id),
+                    'category' => get_post_meta($post_id, 'news_category', true),
+                    'priority' => get_post_meta($post_id, 'news_priority', true),
+                    'date' => get_the_date('F j, Y', $post_id),
+                    'image' => wp_get_attachment_image_url(get_post_thumbnail_id($post_id), 'medium'),
+                    'excerpt' => wp_trim_words(get_the_content(null, false, $post_id), 30)
+                );
+            }
+            wp_reset_postdata();
+        }
+
+        wp_send_json_success($results);
+    }
+
     /**
      * Display single news item
      */
     public function display_single_news($post_id) {
+
         wp_enqueue_style('news-single-style', plugin_dir_url(__FILE__) . 'css/news-single-style.css');
 
         $title = get_the_title($post_id);

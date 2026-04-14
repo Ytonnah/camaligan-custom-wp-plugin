@@ -79,6 +79,29 @@ class News_REST_API {
                 ),
             )
         );
+
+        // POST routes for creating news
+        register_rest_route(
+            self::API_NAMESPACE,
+            '/news',
+            array(
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => array($this, 'create_news'),
+                'permission_callback' => array($this, 'check_news_create_permission'),
+                'args' => $this->get_create_args(),
+            )
+        );
+
+        register_rest_route(
+            self::API_NAMESPACE,
+            '/events',
+            array(
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => array($this, 'create_event'),
+                'permission_callback' => array($this, 'check_news_create_permission'),
+                'args' => $this->get_create_args(true),
+            )
+        );
     }
 
     /**
@@ -298,5 +321,179 @@ class News_REST_API {
         }
 
         return $query_args;
+    }
+
+    /**
+     * Check permission for creating news items
+     */
+    public function check_news_create_permission(WP_REST_Request $request) {
+        // Allow anyone with api_access capability or authenticated users
+        // Modify this based on your permission requirements
+        if (is_user_logged_in()) {
+            return current_user_can('edit_posts');
+        }
+        
+        // Allow API key authentication
+        $api_key = $request->get_header('X-API-Key');
+        if (!empty($api_key)) {
+            $valid_key = get_option('camaligan_api_key');
+            return $api_key === $valid_key;
+        }
+        
+        return false;
+    }
+
+    /**
+     * Arguments for creating news items
+     */
+    private function get_create_args($event_mode = false) {
+        return array(
+            'title' => array(
+                'required' => true,
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => function ($param) {
+                    return !empty($param) && strlen($param) <= 200;
+                },
+            ),
+            'content' => array(
+                'required' => true,
+                'type' => 'string',
+                'sanitize_callback' => 'wp_kses_post',
+            ),
+            'excerpt' => array(
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+            ),
+            'category' => array(
+                'type' => 'string',
+                'enum' => array('announcement', 'event', 'update'),
+                'default' => $event_mode ? 'event' : 'announcement',
+            ),
+            'priority' => array(
+                'type' => 'string',
+                'enum' => array('normal', 'high', 'urgent'),
+                'default' => 'normal',
+            ),
+            'featured' => array(
+                'type' => 'boolean',
+                'default' => false,
+            ),
+            'office' => array(
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_key',
+            ),
+            'date' => array(
+                'type' => 'string',
+                'format' => 'date',
+            ),
+            'image_url' => array(
+                'type' => 'string',
+                'format' => 'uri',
+                'sanitize_callback' => 'esc_url_raw',
+            ),
+            'status' => array(
+                'type' => 'string',
+                'enum' => array('publish', 'draft', 'pending'),
+                'default' => 'publish',
+            ),
+        );
+    }
+
+    /**
+     * Create a news item
+     */
+    public function create_news(WP_REST_Request $request) {
+        return $this->create_item($request, false);
+    }
+
+    /**
+     * Create an event item
+     */
+    public function create_event(WP_REST_Request $request) {
+        return $this->create_item($request, true);
+    }
+
+    /**
+     * Generic method to create news/event items
+     */
+    private function create_item(WP_REST_Request $request, $is_event = false) {
+        // Sanitize inputs
+        $title = sanitize_text_field($request->get_param('title'));
+        $content = wp_kses_post($request->get_param('content'));
+        $excerpt = sanitize_text_field($request->get_param('excerpt'));
+        $category = sanitize_key($request->get_param('category'));
+        $priority = sanitize_key($request->get_param('priority'));
+        $featured = rest_sanitize_boolean($request->get_param('featured'));
+        $office = sanitize_key($request->get_param('office'));
+        $date = sanitize_text_field($request->get_param('date'));
+        $image_url = esc_url_raw($request->get_param('image_url'));
+        $status = sanitize_key($request->get_param('status'));
+
+        // Validate required fields
+        if (empty($title) || empty($content)) {
+            return new WP_Error(
+                'missing_fields',
+                'Title and content are required.',
+                array('status' => 400)
+            );
+        }
+
+        // Default to event category if creating event
+        if ($is_event && empty($category)) {
+            $category = 'event';
+        }
+
+        // Create the post
+        $post_data = array(
+            'post_title' => $title,
+            'post_content' => $content,
+            'post_excerpt' => $excerpt,
+            'post_type' => 'news_item',
+            'post_status' => $status,
+        );
+
+        $post_id = wp_insert_post($post_data, true);
+
+        if (is_wp_error($post_id)) {
+            return new WP_Error(
+                'post_creation_failed',
+                'Failed to create news item.',
+                array('status' => 500)
+            );
+        }
+
+        // Set post metadata
+        if (!empty($category)) {
+            update_post_meta($post_id, 'news_category', $category);
+        }
+        
+        if (!empty($priority)) {
+            update_post_meta($post_id, 'news_priority', $priority);
+        }
+
+        if ($featured) {
+            update_post_meta($post_id, 'news_featured', 1);
+        }
+
+        if (!empty($office)) {
+            update_post_meta($post_id, 'news_office', $office);
+        }
+
+        if (!empty($date)) {
+            update_post_meta($post_id, 'news_date', $date);
+        }
+
+        if (!empty($image_url)) {
+            update_post_meta($post_id, 'news_image_url', $image_url);
+        }
+
+        // Return the created item
+        $item = News_Manager::format_news_item($post_id, true);
+        
+        $response = rest_ensure_response($item);
+        $response->set_status(201);
+        
+        return $response;
     }
 }

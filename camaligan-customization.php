@@ -3,7 +3,7 @@
 	Plugin Name: Camaligan's Custom Functions
 	Plugin URI: camaligan.gov.ph
 	Description: A simple plugin that holds all the custom function of the Official Website of Camaligan
-	Version: 0.5.1
+	Version: 0.6.0
 	Author: Patrick James O. De Leon
 	Author URI: patrickjamesdeleon@gmail.com
 	*/
@@ -28,12 +28,14 @@
 	include("widget/wg_media_gallery/init.php");
 	include("widget/wg_beneficiaries_manager/init.php");
 	include("widget/budget_overview_manager/init.php");
+	include("widget/breadcrumb_manager/init.php");
+
 	include("widget/project_manager/init.php");
 	
 	
 	//Registering All Custom Widgets
 	/*Registering all the custom Widgets*/
-	function camaligan_custom_widget() 
+		function camaligan_custom_widget() 
 	{
 		register_widget( 'camaliganOrdinance_class' );
 		register_widget( 'camaliganTemplateCreator_class' );
@@ -43,6 +45,8 @@
 		register_widget( 'munLandMap_class' );
 		register_widget( 'munlogo_class' );
 		register_widget( 'camaliganOfficeBanner_class' );
+		register_widget( 'Breadcrumb_Widget' );
+		// Barangay widgets registered in wg_barangay_manager/init.php
 	}
 
 	add_action( 'widgets_init', 'camaligan_custom_widget' );
@@ -52,7 +56,7 @@
 	function register_and_enqueue_custom_styles_and_js()
 	{
 		//Website Custom CSS
-		wp_enqueue_style('ResIndependet-styles', plugins_url('/camaligan-customization/css/ResIndependet-styles.css'));
+	wp_enqueue_style('ResIndependet-styles', plugin_dir_url(__FILE__) . 'css/ResIndependet-styles.css');
 		wp_enqueue_style('custom-styles-DesktopandTablet', plugins_url('/camaligan-customization/css/custom-styles-DesktopandTablet.css'));
 		wp_enqueue_style('custom-styles-mobile', plugins_url('/camaligan-customization/css/custom-styles-mobile.css'));
 		wp_enqueue_style('camaligan-ordinance-style', plugins_url('camaligan-customization\widget\ordinanceuploader\ordinance_style.css'));
@@ -93,7 +97,8 @@
 		add_submenu_page("camaligan-custom-function", "Annual Report Manager", "Annual Report Manager", "manage_options", "annualreportmanager", "annualreportmanager");
 			// add_submenu_page("camaligan-custom-function", "Annual Report Manager", "Annual Report Manager", "manage_options", "annualreportmanager", "annualreportmanager");
 			add_submenu_page("camaligan-custom-function", "Budget Overview Manager", "Budget Overview Manager", "manage_options", "budgetoverviewmanager", "budgetoverviewmanager");
-			add_submenu_page("camaligan-custom-function", "Project Manager", "Project Manager", "manage_options", "projectmanager", "projectmanager");
+				add_submenu_page("camaligan-custom-function", "Barangay Manager", "Barangay Manager", "manage_options", "barangaymanager", "barangaymanager");
+					add_submenu_page("camaligan-custom-function", "Project Manager", "Project Manager", "manage_options", "projectmanager", "projectmanager");
 		}
 
 		add_action("admin_menu", "customFunctions_menu");
@@ -126,6 +131,13 @@
 			include("widget/wg_media_gallery/mainmenu.php");
 		}
 
+	
+		function barangaymanager()
+		{
+			require_once("widget/wg_barangay_manager/init.php");
+			render_barangay_manager_page();
+		}
+
 		function beneficiariesmanager()
 		{
 			require_once("widget/wg_beneficiaries_manager/init.php");
@@ -140,6 +152,11 @@
 		function budgetoverviewmanager()
 		{
 			render_budget_overview_manager_page();
+		}
+
+		function breadcrumbmanager()
+		{
+			render_breadcrumb_manager_page();
 		}
 
 		function projectmanager()
