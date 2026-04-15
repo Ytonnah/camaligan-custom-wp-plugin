@@ -31,6 +31,7 @@
 	include("widget/breadcrumb_manager/init.php");
 	include("widget/wg_barangay_manager/init.php");
 
+	include("widget/municipal_ordinance_manager/init.php");
 	include("widget/project_manager/init.php");
 	
 	
@@ -98,6 +99,7 @@
 		add_submenu_page("camaligan-custom-function", "Annual Report Manager", "Annual Report Manager", "manage_options", "annualreportmanager", "annualreportmanager");
 			// add_submenu_page("camaligan-custom-function", "Annual Report Manager", "Annual Report Manager", "manage_options", "annualreportmanager", "annualreportmanager");
 			add_submenu_page("camaligan-custom-function", "Budget Overview Manager", "Budget Overview Manager", "manage_options", "budgetoverviewmanager", "budgetoverviewmanager");
+			add_submenu_page("camaligan-custom-function", "Municipal Ordinance Manager", "Municipal Ordinance Manager", "manage_options", "municipalordinancemanager", "municipalordinancemanager");
 				add_submenu_page("camaligan-custom-function", "Barangay Manager", "Barangay Manager", "manage_options", "barangaymanager", "barangaymanager");
 					add_submenu_page("camaligan-custom-function", "Project Manager", "Project Manager", "manage_options", "projectmanager", "projectmanager");
 		}
@@ -155,6 +157,11 @@
 			render_budget_overview_manager_page();
 		}
 
+		function municipalordinancemanager()
+		{
+			render_municipal_ordinance_manager_page();
+		}
+
 		function breadcrumbmanager()
 		{
 			render_breadcrumb_manager_page();
@@ -188,4 +195,5 @@
 		add_shortcode('display_beneficiaries', 'display_beneficiaries_frontend');
 		add_shortcode('display_media_galleries', 'display_media_gallery_frontend');
 ?>
+
 
