@@ -54,6 +54,11 @@ jQuery(document).ready(function ($) {
     $('#municipal-ordinance-upload-form').on('submit', function (e) {
         e.preventDefault();
 
+        if ($('#municipal_ordinance_category').val().trim() === '') {
+            showStatus('Please enter a category', 'error');
+            return;
+        }
+
         if ($('#municipal_ordinance_pdf_id').val() === '') {
             showStatus('Please select a PDF file', 'error');
             return;
@@ -63,6 +68,7 @@ jQuery(document).ready(function ($) {
             action: 'upload_municipal_ordinance',
             nonce: municipalOrdinanceUploadData.nonce,
             municipal_ordinance_title: $('#municipal_ordinance_title').val(),
+            municipal_ordinance_category: $('#municipal_ordinance_category').val(),
             municipal_ordinance_pdf_id: $('#municipal_ordinance_pdf_id').val(),
         };
 

@@ -75,6 +75,9 @@ class Municipal_Ordinance_REST_API {
             'search' => array(
                 'sanitize_callback' => 'sanitize_text_field',
             ),
+            'category' => array(
+                'sanitize_callback' => 'sanitize_text_field',
+            ),
             'orderby' => array(
                 'default' => 'date',
                 'sanitize_callback' => array($this, 'sanitize_orderby'),
@@ -102,6 +105,12 @@ class Municipal_Ordinance_REST_API {
         $args = array(
             'title' => array(
                 'sanitize_callback' => 'sanitize_text_field',
+            ),
+            'category' => array(
+                'sanitize_callback' => 'sanitize_text_field',
+            ),
+            'category_id' => array(
+                'sanitize_callback' => 'absint',
             ),
             'pdf_id' => array(
                 'sanitize_callback' => 'absint',
@@ -150,16 +159,29 @@ class Municipal_Ordinance_REST_API {
         $orderby = $this->sanitize_orderby($request->get_param('orderby'));
         $order = $this->sanitize_order($request->get_param('order'));
         $search = (string) $request->get_param('search');
+        $category = sanitize_text_field((string) $request->get_param('category'));
 
-        $query = new WP_Query(array(
-            'post_type' => 'municipal_ordinance',
+        $query_args = array(
+            'post_type' => Municipal_Ordinance_Manager::POST_TYPE,
             'post_status' => 'publish',
             'posts_per_page' => $per_page,
             'paged' => $page,
             's' => $search,
             'orderby' => $orderby,
             'order' => $order,
-        ));
+        );
+
+        if ($category !== '') {
+            $query_args['tax_query'] = array(
+                array(
+                    'taxonomy' => Municipal_Ordinance_Manager::CATEGORY_TAXONOMY,
+                    'field' => is_numeric($category) ? 'term_id' : 'slug',
+                    'terms' => is_numeric($category) ? absint($category) : sanitize_title($category),
+                ),
+            );
+        }
+
+        $query = new WP_Query($query_args);
         $items = array();
 
         if ($query->have_posts()) {
@@ -185,7 +207,7 @@ class Municipal_Ordinance_REST_API {
         $post_id = absint($request['id']);
         $post = get_post($post_id);
 
-        if (!$post || $post->post_type !== 'municipal_ordinance' || $post->post_status !== 'publish') {
+        if (!$post || $post->post_type !== Municipal_Ordinance_Manager::POST_TYPE || $post->post_status !== 'publish') {
             return new WP_Error('municipal_ordinance_not_found', 'Municipal ordinance not found.', array('status' => 404));
         }
 
@@ -198,10 +220,12 @@ class Municipal_Ordinance_REST_API {
             return $prepared;
         }
 
-        $post_id = wp_insert_post($prepared, true);
+        $post_id = wp_insert_post($prepared['post_data'], true);
         if (is_wp_error($post_id)) {
             return $post_id;
         }
+
+        $this->set_ordinance_category($post_id, $prepared['category_id']);
 
         return new WP_REST_Response(
             array(
@@ -216,7 +240,7 @@ class Municipal_Ordinance_REST_API {
         $post_id = absint($request['id']);
         $post = get_post($post_id);
 
-        if (!$post || $post->post_type !== 'municipal_ordinance') {
+        if (!$post || $post->post_type !== Municipal_Ordinance_Manager::POST_TYPE) {
             return new WP_Error('municipal_ordinance_not_found', 'Municipal ordinance not found.', array('status' => 404));
         }
 
@@ -225,10 +249,12 @@ class Municipal_Ordinance_REST_API {
             return $prepared;
         }
 
-        $updated = wp_update_post($prepared, true);
+        $updated = wp_update_post($prepared['post_data'], true);
         if (is_wp_error($updated)) {
             return $updated;
         }
+
+        $this->set_ordinance_category($post_id, $prepared['category_id']);
 
         return rest_ensure_response(array(
             'message' => 'Municipal ordinance updated successfully.',
@@ -240,7 +266,7 @@ class Municipal_Ordinance_REST_API {
         $post_id = absint($request['id']);
         $post = get_post($post_id);
 
-        if (!$post || $post->post_type !== 'municipal_ordinance') {
+        if (!$post || $post->post_type !== Municipal_Ordinance_Manager::POST_TYPE) {
             return new WP_Error('municipal_ordinance_not_found', 'Municipal ordinance not found.', array('status' => 404));
         }
 
@@ -261,9 +287,18 @@ class Municipal_Ordinance_REST_API {
         $title = $request->has_param('title') ? sanitize_text_field($request->get_param('title')) : ($existing ? $existing['title'] : '');
         $pdf_id = $request->has_param('pdf_id') ? absint($request->get_param('pdf_id')) : ($existing ? (int) $existing['pdf_id'] : 0);
         $status = $request->has_param('status') ? sanitize_key($request->get_param('status')) : ($is_update ? get_post_status($post_id) : 'publish');
+        $category_id = $this->resolve_category_id($request, $existing);
+
+        if (is_wp_error($category_id)) {
+            return $category_id;
+        }
 
         if ($title === '') {
             return new WP_Error('municipal_ordinance_invalid_title', 'Title is required.', array('status' => 400));
+        }
+
+        if ($category_id <= 0) {
+            return new WP_Error('municipal_ordinance_invalid_category', 'Category is required.', array('status' => 400));
         }
 
         if ($pdf_id <= 0) {
@@ -279,7 +314,7 @@ class Municipal_Ordinance_REST_API {
         }
 
         $post_data = array(
-            'post_type' => 'municipal_ordinance',
+            'post_type' => Municipal_Ordinance_Manager::POST_TYPE,
             'post_title' => $title,
             'post_status' => $status,
             'meta_input' => array(
@@ -292,7 +327,49 @@ class Municipal_Ordinance_REST_API {
             $post_data['ID'] = $post_id;
         }
 
-        return $post_data;
+        return array(
+            'post_data' => $post_data,
+            'category_id' => $category_id,
+        );
+    }
+
+    private function resolve_category_id(WP_REST_Request $request, $existing = null) {
+        if ($request->has_param('category_id')) {
+            $category_id = absint($request->get_param('category_id'));
+            $term = get_term($category_id, Municipal_Ordinance_Manager::CATEGORY_TAXONOMY);
+
+            if (!$term || is_wp_error($term)) {
+                return new WP_Error('municipal_ordinance_invalid_category', 'The provided category is invalid.', array('status' => 400));
+            }
+
+            return $category_id;
+        }
+
+        if ($request->has_param('category')) {
+            $category = sanitize_text_field($request->get_param('category'));
+
+            if ($category === '') {
+                return 0;
+            }
+
+            $term = term_exists($category, Municipal_Ordinance_Manager::CATEGORY_TAXONOMY);
+
+            if (!$term) {
+                $term = wp_insert_term($category, Municipal_Ordinance_Manager::CATEGORY_TAXONOMY);
+            }
+
+            if (is_wp_error($term)) {
+                return $term;
+            }
+
+            return absint(is_array($term) ? $term['term_id'] : $term);
+        }
+
+        return $existing ? absint($existing['category_id']) : 0;
+    }
+
+    private function set_ordinance_category($post_id, $category_id) {
+        wp_set_object_terms($post_id, array(absint($category_id)), Municipal_Ordinance_Manager::CATEGORY_TAXONOMY, false);
     }
 
     private function is_valid_pdf_attachment($attachment_id) {

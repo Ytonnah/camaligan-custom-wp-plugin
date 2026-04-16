@@ -62,6 +62,7 @@ class Municipal_Ordinance_Viewer {
     private function render_ordinance_item($post_id) {
         $title = get_the_title($post_id);
         $date = get_the_date('F j, Y', $post_id);
+        $category = Municipal_Ordinance_Manager::get_ordinance_category($post_id);
         $pdf_id = get_post_meta($post_id, 'municipal_ordinance_pdf_id', true);
         $pdf_url = $pdf_id ? wp_get_attachment_url($pdf_id) : '';
         $pdf_title = $pdf_id ? get_the_title($pdf_id) : '';
@@ -70,6 +71,7 @@ class Municipal_Ordinance_Viewer {
             <div class="municipal-ordinance-content">
                 <h3 class="municipal-ordinance-title"><?php echo esc_html($title); ?></h3>
                 <div class="municipal-ordinance-meta">
+                    <span class="municipal-ordinance-category"><?php echo esc_html($category['name'] ?: 'Uncategorized'); ?></span>
                     <span class="municipal-ordinance-date"><?php echo esc_html($date); ?></span>
                 </div>
             </div>
@@ -107,11 +109,14 @@ class Municipal_Ordinance_Viewer {
             while ($query->have_posts()) {
                 $query->the_post();
                 $post_id = get_the_ID();
+                $category = Municipal_Ordinance_Manager::get_ordinance_category($post_id);
                 $pdf_id = get_post_meta($post_id, 'municipal_ordinance_pdf_id', true);
                 $results[] = array(
                     'ID' => $post_id,
                     'title' => get_the_title($post_id),
                     'date' => get_the_date('F j, Y', $post_id),
+                    'category' => $category['name'],
+                    'category_slug' => $category['slug'],
                     'pdf_url' => $pdf_id ? wp_get_attachment_url($pdf_id) : '',
                     'pdf_title' => $pdf_id ? get_the_title($pdf_id) : '',
                 );

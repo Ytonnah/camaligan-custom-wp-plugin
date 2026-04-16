@@ -39,6 +39,7 @@ if (!function_exists('register_municipal_ordinance_admin_menu')) {
             add_menu_page('Municipal Ordinance Manager', 'Municipal Ordinances', 'manage_options', 'municipal-ordinance-manager', 'render_municipal_ordinance_manager_page', 'dashicons-media-document');
             add_submenu_page('municipal-ordinance-manager', 'Upload Municipal Ordinance', 'Upload Municipal Ordinance', 'manage_options', 'municipal-ordinance-upload', 'render_municipal_ordinance_upload_page');
             add_submenu_page('municipal-ordinance-manager', 'View Municipal Ordinances', 'View Municipal Ordinances', 'manage_options', 'municipal-ordinance-view', 'render_municipal_ordinance_view_page');
+            add_submenu_page('municipal-ordinance-manager', 'Ordinance Categories', 'Categories', 'manage_options', 'edit-tags.php?taxonomy=' . Municipal_Ordinance_Manager::CATEGORY_TAXONOMY . '&post_type=' . Municipal_Ordinance_Manager::POST_TYPE);
         }
     }
 }
@@ -82,6 +83,7 @@ if (!function_exists('render_municipal_ordinance_manager_page')) {
                 <thead>
                     <tr>
                         <th>Title</th>
+                        <th>Category</th>
                         <th>Date</th>
                         <th>Actions</th>
                     </tr>
@@ -90,11 +92,13 @@ if (!function_exists('render_municipal_ordinance_manager_page')) {
                     <?php if ($recent->have_posts()): ?>
                         <?php while ($recent->have_posts()): $recent->the_post(); ?>
                             <?php
+                            $category = Municipal_Ordinance_Manager::get_ordinance_category(get_the_ID());
                             $pdf_id = get_post_meta(get_the_ID(), 'municipal_ordinance_pdf_id', true);
                             $pdf_url = $pdf_id ? wp_get_attachment_url($pdf_id) : '';
                             ?>
                             <tr>
                                 <td><strong><?php the_title(); ?></strong></td>
+                                <td><?php echo esc_html($category['name'] ?: 'Uncategorized'); ?></td>
                                 <td><?php echo esc_html(get_the_date('F j, Y')); ?></td>
                                 <td>
                                     <?php if ($pdf_url): ?>
@@ -107,7 +111,7 @@ if (!function_exists('render_municipal_ordinance_manager_page')) {
                         <?php endwhile; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="3">No municipal ordinances found.</td>
+                            <td colspan="4">No municipal ordinances found.</td>
                         </tr>
                     <?php endif; wp_reset_postdata(); ?>
                 </tbody>
@@ -118,3 +122,4 @@ if (!function_exists('render_municipal_ordinance_manager_page')) {
 }
 
 add_action('admin_menu', 'register_municipal_ordinance_admin_menu');
+

@@ -34,6 +34,11 @@ class Municipal_Ordinance_Uploader {
                 </div>
 
                 <div class="form-group">
+                    <label for="municipal_ordinance_category">Category *</label>
+                    <input type="text" id="municipal_ordinance_category" name="municipal_ordinance_category" placeholder="Enter ordinance category" required>
+                </div>
+
+                <div class="form-group">
                     <label for="municipal_ordinance_pdf">PDF File *</label>
                     <div class="media-upload-wrapper">
                         <button type="button" class="btn btn-media-upload" id="upload_municipal_ordinance_pdf">Upload PDF</button>
@@ -61,10 +66,15 @@ class Municipal_Ordinance_Uploader {
         }
 
         $title = sanitize_text_field($_POST['municipal_ordinance_title'] ?? '');
+        $category = sanitize_text_field($_POST['municipal_ordinance_category'] ?? '');
         $pdf_id = absint($_POST['municipal_ordinance_pdf_id'] ?? 0);
 
         if (empty($title)) {
             wp_send_json_error('Title is required');
+        }
+
+        if (empty($category)) {
+            wp_send_json_error('Category is required');
         }
 
         if (empty($pdf_id)) {
@@ -75,8 +85,13 @@ class Municipal_Ordinance_Uploader {
             wp_send_json_error('The selected file must be a PDF');
         }
 
+        $category_id = $this->get_or_create_category_id($category);
+        if (is_wp_error($category_id)) {
+            wp_send_json_error($category_id->get_error_message());
+        }
+
         $post_id = wp_insert_post(array(
-            'post_type' => 'municipal_ordinance',
+            'post_type' => Municipal_Ordinance_Manager::POST_TYPE,
             'post_title' => $title,
             'post_content' => '',
             'post_status' => 'publish',
@@ -87,6 +102,8 @@ class Municipal_Ordinance_Uploader {
         ));
 
         if ($post_id) {
+            wp_set_object_terms($post_id, array(absint($category_id)), Municipal_Ordinance_Manager::CATEGORY_TAXONOMY, false);
+
             wp_send_json_success(array(
                 'message' => 'Municipal ordinance uploaded successfully',
                 'post_id' => $post_id,
@@ -115,6 +132,20 @@ class Municipal_Ordinance_Uploader {
         }
 
         wp_send_json_error('Failed to delete municipal ordinance');
+    }
+
+    private function get_or_create_category_id($category) {
+        $term = term_exists($category, Municipal_Ordinance_Manager::CATEGORY_TAXONOMY);
+
+        if (!$term) {
+            $term = wp_insert_term($category, Municipal_Ordinance_Manager::CATEGORY_TAXONOMY);
+        }
+
+        if (is_wp_error($term)) {
+            return $term;
+        }
+
+        return absint(is_array($term) ? $term['term_id'] : $term);
     }
 
     private function is_valid_pdf_attachment($attachment_id) {

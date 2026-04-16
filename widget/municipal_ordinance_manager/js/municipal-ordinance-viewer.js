@@ -72,6 +72,7 @@ jQuery(document).ready(function ($) {
                         <div class="municipal-ordinance-content">
                             <h3 class="municipal-ordinance-title">${item.title}</h3>
                             <div class="municipal-ordinance-meta">
+                                <span class="municipal-ordinance-category">${item.category || 'Uncategorized'}</span>
                                 <span class="municipal-ordinance-date">${item.date}</span>
                             </div>
                         </div>
