@@ -1,24 +1,24 @@
-# Camaligan Customization Update TODO (v0.6.0)
+# WebApp Comprehensive Dashboard Implementation
 
-## Pending Steps:
-- [x] Step 1: Complete News Manager JSON endpoint (widget/wg_news_manager) ✅
-  - [x] Read & verified implementation
-  - [x] Code works (json_news_list & shortcode logic correct)
-  - [x] Updated TODO.md
-- [x] Step 2: Implement Breadcrumb Replacement Widget (widget/breadcrumb_manager) ✅
-  - [ ] Create widget PHP, shortcode
-  - [ ] Basic CSS/JS if needed
-  - [ ] Register in main plugin
-  - [ ] Replace TODO in custom-template/inc/breadcrumbs.php
-- [ ] Step 3: Cleanup camaligan-customization.php
-  - [ ] Fix enqueue paths to use plugin_dir_url
-  - [ ] Add/verify missing menu handlers (annual_report_manager_page, etc.)
-  - [ ] Bump version to 0.6.0
-  - [ ] Register new breadcrumb widget
-- [ ] Step 4: Verify Barangay Manager integration (if missing)
-- [ ] Step 5: Update all MD files with status
-- [ ] Step 6: Test plugin functionality
-- [ ] Complete: attempt_completion
+## Steps Completed
+- [x] 1. Created TODO.md and planned all widget integrations
+- [x] 2. Updated WebApp/index.html (added ordinances/annual-reports tabs, forms, stats, fixed posts)
+- [x] 3. Updated WebApp/js/app.js (switchTab, dashboard counts, search listeners, ordinance/report functions)
+- [x] 4. Added modal to index.html
 
-**All steps complete - plugin updated! ✅**
+## Steps In Progress
+- [ ] 2. Update WebApp/index.html: Add tabs/sections for ALL widgets (ordinances, annual_reports, budget_overview, bac, news, tourism, barangay, beneficiaries, media_gallery, projects, bid-interactive, etc.)
+- [ ] 3. Update WebApp/js/app.js: Implement load/display/search/CRUD for each API endpoint
+- [ ] 4. Update WebApp/css/style.css: Add styles for new elements
+- [ ] 5. Fix existing incomplete sections (posts form/list)
+- [ ] 6. Add dashboard stats for all sections
+- [ ] 7. Handle PDF/document previews/downloads
+- [ ] 8. Add authentication (WP nonce/basic auth) for uploads
+- [ ] 9. Test all functionalities
+- [ ] 10. Optimize and finalize
+
+## Notes
+- Base APIs on existing REST endpoints (e.g., /wp/v2/municipal_ordinance, /annual_report, etc.)
+- WP site: http://localhost/wordpress (adjust API_BASE)
+- Forms: title, PDF upload (media endpoint -> attachment ID), custom fields (year/status/etc.) per widget
 

@@ -7,14 +7,14 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #3852B4 0%, #5E7AC4 100%);
+    background: linear-gradient(135deg, #EDE9E6 0%, #C9996B 100%);
     min-height: 100vh;
     padding: 20px;
 }
 
 /* Dashboard Container */
 .dashboard-container {
-    max-width: 1200px;
+    max-width: 90vw;
     margin: 0 auto;
     background: white;
     border-radius: 12px;
@@ -24,8 +24,8 @@ body {
 
 /* Header */
 .dashboard-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+   color: white;
+    background-color: #5C766D;
     padding: 40px 30px;
     text-align: center;
 }
@@ -65,13 +65,13 @@ body {
 }
 
 .nav-tab:hover {
-    background: #f0f2f5;
-    color: #667eea;
+    background: #EDE9E6;
+    color: #5C4F4A;
 }
 
 .nav-tab.active {
-    color: #667eea;
-    border-bottom-color: #667eea;
+    color: #C9996B;
+    border-bottom-color: #C9996B;
     background: white;
 }
 
@@ -110,12 +110,12 @@ body {
 }
 
 .stat-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-color: #5C766D;
     color: white;
     padding: 30px;
     border-radius: 12px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 4px 15px rgba(201, 153, 107, 0.3);
     transition: transform 0.3s ease;
 }
 
@@ -150,7 +150,7 @@ body {
 /* Section Header */
 .section-header {
     display: flex;
-    justify-content: space-between;
+    justify-content:space-around ;
     align-items: center;
     margin-bottom: 30px;
     gap: 20px;
@@ -173,7 +173,7 @@ body {
 
 .search-input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #C9996B;
 }
 
 /* Buttons */
@@ -190,12 +190,12 @@ body {
 }
 
 .btn-primary {
-    background: #667eea;
-    color: white;
+    background: #C9996B;
+    color: #5C4F4A;
 }
 
 .btn-primary:hover {
-    background: #5568d3;
+    background: #5C766D;
     transform: translateY(-2px);
 }
 
@@ -385,7 +385,7 @@ body {
 .form-group textarea:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #C9996B;
 }
 
 .form-group textarea {
@@ -415,6 +415,39 @@ body {
 
 .form-actions button {
     flex: 1;
+}
+
+/* Ordinance Form */
+.ordinance-form {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border-left: 4px solid #dc3545;
+}
+
+.ordinance-form h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Annual Report Form */
+.annual-report-form {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border-left: 4px solid #17a2b8;
+}
+
+.annual-report-form h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.ordinance-badge {
+    background: #dc3545;
+    color: white !important;
 }
 
 /* Recent Section */
@@ -483,10 +516,12 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
     .dashboard-header {
+        
         padding: 30px 20px;
     }
 
     .dashboard-header h1 {
+        color: white;
         font-size: 24px;
     }
 

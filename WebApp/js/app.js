@@ -35,6 +35,12 @@ function switchTab(tabName) {
         loadMedia();
     } else if (tabName === 'dashboard') {
         loadDashboard();
+    } else if (tabName === 'ordinances') {
+        loadOrdinances();
+    } else if (tabName === 'annual-reports') {
+        loadAnnualReports();
+    } else if (tabName === 'budget') {
+        loadBudget();
     }
 }
 
@@ -52,7 +58,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('bac-search')?.addEventListener('input', debounce(searchBAC, 300));
     document.getElementById('tourism-search')?.addEventListener('input', debounce(searchTourism, 300));
     document.getElementById('beneficiaries-search')?.addEventListener('input', debounce(searchBeneficiaries, 300));
-    document.getElementById('media-search')?.addEventListener('input', debounce(searchMedia, 300));
+        document.getElementById('media-search')?.addEventListener('input', debounce(searchMedia, 300));
+        document.getElementById('ordinances-search')?.addEventListener('input', debounce(searchOrdinances, 300));
+        document.getElementById('annual-reports-search')?.addEventListener('input', debounce(searchAnnualReports, 300));
+        document.getElementById('budget-search')?.addEventListener('input', debounce(searchBudget, 300));
 
     // Load initial dashboard
     loadDashboard();
@@ -71,24 +80,362 @@ function debounce(func, wait) {
     };
 }
 
+// Load Ordinances
+async function loadOrdinances() {
+    try {
+        const response = await fetch(`${API_BASE}municipal_ordinance?per_page=20`);
+        const ordinances = await response.json();
+        if (ordinances.items) ordinances = ordinances.items; // Handle custom format
+        displayOrdinances(ordinances);
+    } catch (error) {
+        console.error('Error loading ordinances:', error);
+        document.getElementById('ordinances-list').innerHTML = '<div class="empty-state"><p>Error loading ordinances</p></div>';
+    }
+}
+
+// Display Ordinances
+function displayOrdinances(ordinances) {
+    const container = document.getElementById('ordinances-list');
+    
+    if (!ordinances || ordinances.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>🪧 No ordinances found</p></div>';
+        return;
+    }
+
+    container.innerHTML = ordinances.map(item => {
+        const pdfUrl = item.pdf_url || '#';
+        return `
+            <div class="item-card" onclick="showOrdinanceDetail(${item.id})">
+                <div class="item-header">
+                    <h3 class="item-title">${item.title}</h3>
+                </div>
+                <div class="item-meta">
+                    <span>📅 ${new Date(item.date).toLocaleDateString()}</span>
+                    <span class="item-badge ordinance-badge">${item.status || 'Published'}</span>
+                </div>
+                <div class="item-actions">
+                    <a href="${pdfUrl}" class="btn btn-primary" target="_blank">View PDF</a>
+                    <button class="btn btn-danger" onclick="event.stopPropagation(); deleteOrdinance(${item.id})">Delete</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Search Ordinances
+async function searchOrdinances() {
+    const searchTerm = document.getElementById('ordinances-search').value;
+    if (!searchTerm) {
+        loadOrdinances();
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}municipal_ordinance?search=${encodeURIComponent(searchTerm)}`);
+        const ordinances = await response.json();
+        if (ordinances.items) ordinances = ordinances.items;
+        displayOrdinances(ordinances);
+    } catch (error) {
+        console.error('Error searching ordinances:', error);
+    }
+}
+
+// Show Ordinance Detail
+async function showOrdinanceDetail(id) {
+    try {
+        const response = await fetch(`${API_BASE}municipal_ordinance/${id}`);
+        const item = await response.json();
+        const content = `
+            <h2>${item.title}</h2>
+            <div class="item-meta">
+                <span>📅 ${new Date(item.date).toLocaleDateString()}</span>
+            </div>
+            ${item.pdf_url ? `<iframe src="${item.pdf_url}" style="width:100%; height:500px;" frameborder="0"></iframe>` : '<p>No PDF available</p>'}
+        `;
+        showModal(content);
+    } catch (error) {
+        console.error('Error loading ordinance detail:', error);
+    }
+}
+
+// Delete Ordinance
+async function deleteOrdinance(id) {
+    if (!confirm('Are you sure you want to delete this ordinance?')) return;
+    try {
+        await fetch(`${API_BASE}municipal_ordinance/${id}`, { method: 'DELETE' });
+        loadOrdinances();
+    } catch (error) {
+        alert('Error deleting ordinance');
+    }
+}
+
+// Show/Hide Ordinance Form
+function showOrdinanceForm() {
+    document.getElementById('ordinance-form').style.display = 'block';
+}
+
+function hideOrdinanceForm() {
+    document.getElementById('ordinance-form').style.display = 'none';
+    document.getElementById('ordinance-title').value = '';
+    document.getElementById('ordinance-number').value = '';
+    document.getElementById('ordinance-pdf').value = '';
+    document.getElementById('ordinance-status').value = 'publish';
+}
+
+// Handle Ordinance PDF Preview (simple file name show)
+document.getElementById('ordinance-pdf')?.addEventListener('change', function(e) {
+    const fileName = e.target.files[0]?.name || '';
+    if (fileName) {
+        const preview = document.createElement('p');
+        preview.textContent = `Selected: ${fileName}`;
+        preview.style.color = '#28a745';
+        e.target.parentNode.appendChild(preview);
+    }
+});
+
+// Handle Ordinance Submit
+async function handleOrdinanceSubmit(event) {
+    event.preventDefault();
+    const title = document.getElementById('ordinance-title').value;
+    const number = document.getElementById('ordinance-number').value;
+    const status = document.getElementById('ordinance-status').value;
+    const pdfFile = document.getElementById('ordinance-pdf').files[0];
+
+    if (!title || !pdfFile) {
+        alert('Title and PDF required');
+        return;
+    }
+
+    try {
+        // Upload PDF first
+        const formData = new FormData();
+        formData.append('file', pdfFile);
+        const mediaResponse = await fetch(`${API_BASE}media`, { method: 'POST', body: formData });
+        const media = await mediaResponse.json();
+        const pdf_id = media.id;
+
+        // Create ordinance
+        const ordinanceData = {
+            title,
+            pdf_id,
+            status
+        };
+        if (number) ordinanceData.ordinance_number = number;
+
+        const response = await fetch(`${API_BASE}municipal_ordinance`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(ordinanceData)
+        });
+
+        if (!response.ok) throw new Error('Failed to create ordinance');
+        alert('✅ Ordinance added successfully!');
+        hideOrdinanceForm();
+        loadOrdinances();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('❌ Error: ' + error.message);
+    }
+}
+
+// Load Annual Reports
+async function loadAnnualReports() {
+    try {
+        const response = await fetch(`${API_BASE}annual_report?per_page=20`);
+        const reports = await response.json();
+        if (reports.items) reports = reports.items;
+        displayAnnualReports(reports);
+    } catch (error) {
+        console.error('Error loading annual reports:', error);
+        document.getElementById('annual-reports-list').innerHTML = '<div class="empty-state"><p>Error loading reports</p></div>';
+    }
+}
+
+// Display Annual Reports
+function displayAnnualReports(reports) {
+    const container = document.getElementById('annual-reports-list');
+    
+    if (!reports || reports.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>📊 No annual reports found</p></div>';
+        return;
+    }
+
+    container.innerHTML = reports.map(item => {
+        const pdfUrl = item.pdf_url || '#';
+        return `
+            <div class="item-card" onclick="showAnnualReportDetail(${item.id})">
+                <div class="item-header">
+                    <h3 class="item-title">${item.title}</h3>
+                </div>
+                <div class="item-meta">
+                    <span>📅 ${item.year || new Date(item.date).getFullYear()}</span>
+                    <span class="item-badge">${item.status || 'Published'}</span>
+                </div>
+                <div class="item-actions">
+                    <a href="${pdfUrl}" class="btn btn-primary" target="_blank">View PDF</a>
+                    <button class="btn btn-danger" onclick="event.stopPropagation(); deleteAnnualReport(${item.id})">Delete</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Search Annual Reports
+async function searchAnnualReports() {
+    const searchTerm = document.getElementById('annual-reports-search').value;
+    if (!searchTerm) {
+        loadAnnualReports();
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}annual_report?search=${encodeURIComponent(searchTerm)}`);
+        const reports = await response.json();
+        if (reports.items) reports = reports.items;
+        displayAnnualReports(reports);
+    } catch (error) {
+        console.error('Error searching reports:', error);
+    }
+}
+
+// Show Annual Report Detail
+async function showAnnualReportDetail(id) {
+    try {
+        const response = await fetch(`${API_BASE}annual_report/${id}`);
+        const item = await response.json();
+        const content = `
+            <h2>${item.title}</h2>
+            <div class="item-meta">
+                <span>📅 ${item.year || new Date(item.date).getFullYear()}</span>
+            </div>
+            ${item.pdf_url ? `<iframe src="${item.pdf_url}" style="width:100%; height:500px;" frameborder="0"></iframe>` : '<p>No PDF available</p>'}
+        `;
+        showModal(content);
+    } catch (error) {
+        console.error('Error loading report detail:', error);
+    }
+}
+
+// Delete Annual Report
+async function deleteAnnualReport(id) {
+    if (!confirm('Are you sure you want to delete this report?')) return;
+    try {
+        await fetch(`${API_BASE}annual_report/${id}`, { method: 'DELETE' });
+        loadAnnualReports();
+    } catch (error) {
+        alert('Error deleting report');
+    }
+}
+
+// Show/Hide Annual Report Form
+function showAnnualReportForm() {
+    document.getElementById('annual-report-form').style.display = 'block';
+}
+
+function hideAnnualReportForm() {
+    document.getElementById('annual-report-form').style.display = 'none';
+    document.getElementById('annual-report-title').value = '';
+    document.getElementById('annual-report-year').value = '';
+    document.getElementById('annual-report-pdf').value = '';
+    document.getElementById('annual-report-status').value = 'publish';
+}
+
+// Handle Annual Report PDF Preview
+document.getElementById('annual-report-pdf')?.addEventListener('change', function(e) {
+    const fileName = e.target.files[0]?.name || '';
+    if (fileName) {
+        const preview = document.createElement('p');
+        preview.textContent = `Selected: ${fileName}`;
+        preview.style.color = '#28a745';
+        e.target.parentNode.appendChild(preview);
+    }
+});
+
+// Handle Annual Report Submit
+async function handleAnnualReportSubmit(event) {
+    event.preventDefault();
+    const title = document.getElementById('annual-report-title').value;
+    const year = document.getElementById('annual-report-year').value;
+    const status = document.getElementById('annual-report-status').value;
+    const pdfFile = document.getElementById('annual-report-pdf').files[0];
+
+    if (!title || !year || !pdfFile) {
+        alert('Title, year, and PDF required');
+        return;
+    }
+
+    try {
+        // Upload PDF
+        const formData = new FormData();
+        formData.append('file', pdfFile);
+        const mediaResponse = await fetch(`${API_BASE}media`, { method: 'POST', body: formData });
+        const media = await mediaResponse.json();
+        const pdf_id = media.id;
+
+        // Create report
+        const reportData = {
+            title,
+            year: parseInt(year),
+            pdf_id,
+            status
+        };
+
+        const response = await fetch(`${API_BASE}annual_report`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reportData)
+        });
+
+        if (!response.ok) throw new Error('Failed to create report');
+        alert('✅ Report added successfully!');
+        hideAnnualReportForm();
+        loadAnnualReports();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('❌ Error: ' + error.message);
+    }
+}
+
+// Generic Modal Show
+function showModal(content) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.id = 'detail-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modal-body">${content}</div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+    });
+}
+
 // Load Dashboard
 async function loadDashboard() {
     try {
-        const [newsCount, bacCount, postsCount, tourismCount, beneficiariesCount, mediaCount] = await Promise.all([
+    const [newsCount, bacCount, postsCount, tourismCount, beneficiariesCount, mediaCount, ordinancesCount, annualReportsCount] = await Promise.all([
             getCount('news_item'),
             getCount('bac_item'),
             getCount('post'),
             getCount('tourism_item'),
             getCount('beneficiary_item'),
-            getCount('media_gallery')
-        ]);
+            getCount('media_gallery'),
+            getCount('municipal_ordinance'),
+            getCount('annual_report')
+        ]); 
 
         document.getElementById('news-count').textContent = newsCount;
         document.getElementById('bac-count').textContent = bacCount;
         document.getElementById('posts-count').textContent = postsCount;
         document.getElementById('tourism-count').textContent = tourismCount;
         document.getElementById('beneficiaries-count').textContent = beneficiariesCount;
-        document.getElementById('media-count').textContent = mediaCount;
+    document.getElementById('media-count').textContent = mediaCount;
+        document.getElementById('ordinances-count').textContent = ordinancesCount;
+        document.getElementById('annual-reports-count').textContent = annualReportsCount;
+        document.getElementById('budget-count').textContent = budgetCount;
 
         // Load recent news
         const recentNews = await fetch(`${API_BASE}news_item?per_page=3`).then(r => r.json());
